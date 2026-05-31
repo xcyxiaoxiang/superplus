@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    {
+      "name": "superplus",
+      "display_name": "superPlus",
+      "description": "Spec-driven development workflow — design, plan, implement (TDD), verify, sync, archive",
+      "author": "superPlus",
+      "source": {
+        "source": "local",
+        "path": "./"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "superplus",
+  "version": "0.2.1",
+  "type": "module",
+  "main": ".opencode/plugins/superplus.js"
+}

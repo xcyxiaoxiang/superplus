@@ -1,0 +1,18 @@
+{
+  "name": "superplus",
+  "description": "Development marketplace for superPlus spec-driven development kit",
+  "owner": {
+    "name": "superPlus"
+  },
+  "plugins": [
+    {
+      "name": "superplus",
+      "description": "superPlus: spec-driven development workflow — design, plan, implement (TDD), verify, sync, archive",
+      "version": "0.2.1",
+      "source": "./",
+      "author": {
+        "name": "superPlus"
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "superplus",
+  "displayName": "superPlus",
+  "description": "Spec-driven development workflow: design, plan, implement (TDD), verify, sync, archive",
+  "version": "0.2.1",
+  "author": {
+    "name": "superPlus"
+  },
+  "homepage": "https://github.com/xcyxiaoxiang/superplus",
+  "repository": "https://github.com/xcyxiaoxiang/superplus",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "tdd",
+    "spec-driven",
+    "workflow",
+    "verification"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks-cursor.json"
+}
