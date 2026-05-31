@@ -133,11 +133,27 @@ verify-change ──→ 发现问题 ──→ root-cause-debugging ──→ re
 }
 ```
 
-### 其他平台
+### 其他平台（全局安装）
 
-- **Claude Code**: 见 `.claude-plugin/`
-- **Codex**: 见 `.codex-plugin/`
-- **Cursor**: 见 `.cursor-plugin/`
+**Claude Code:**
+```bash
+/plugin marketplace add xcyxiaoxiang/superplus
+/plugin install superplus@superplus
+```
+
+**Codex CLI:**
+```bash
+codex plugin marketplace add xcyxiaoxiang/superplus
+codex /plugins   # → 选择 superPlus 市场 → 安装
+```
+
+**Cursor:**
+```bash
+git clone https://github.com/xcyxiaoxiang/superplus.git ~/projects/superPlus
+ln -s ~/projects/superPlus/skills ~/.cursor/skills/superplus
+```
+
+各平台项目级安装方式见对应目录：`.claude-plugin/`、`.codex-plugin/`、`.cursor-plugin/`。
 
 ## 项目结构
 
