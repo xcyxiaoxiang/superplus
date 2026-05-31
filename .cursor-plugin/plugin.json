@@ -9,6 +9,7 @@
   "homepage": "https://github.com/xcyxiaoxiang/superplus",
   "repository": "https://github.com/xcyxiaoxiang/superplus",
   "license": "MIT",
+  "logo": "assets/001.png",
   "keywords": [
     "skills",
     "tdd",

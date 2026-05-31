@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/001.png" width="300" alt="superPlus">
+</p>
+
 # superPlus — AI-Native Spec-Driven Development Kit
 
 superPlus 是一个**规格驱动开发工作流**，融合了 OpenSpec 的 artifact-driven 方法与 Superpowers 的行为塑造技能。它提供 7 个核心工作流技能 + 5 个辅助技能，覆盖完整的开发生命周期：探索 → 设计 → 规划 → 实现（TDD）→ 验证 → 同步 → 归档。
@@ -15,6 +19,8 @@ exploring ──→ designing ──→ write-plan-tasks ──→ apply-change 
                                                                        ▼
                                                                    re-verify
 ```
+
+![工作流](./assets/002.jpg)
 
 ## 核心技能
 
@@ -73,6 +79,8 @@ proposal.md ──→ specs/*.md ──→ plan.md ──→ tasks.md ──→ 
 | **Business Flow Integrity**（业务流完整性） | 状态机、异常路径、业务规则 enforcement | 死状态、缺少回滚、规则只在 UI 层校验 |
 | **Field Consistency**（字段一致性） | 全链路字段追踪（前端→API→Service→DAO→DB） | 字段丢失、命名漂移、类型不匹配 |
 
+![](./assets/004.png)
+
 ### 根因分析技能 — 调试 + 归档一体
 
 这是 superPlus 独有的差异化能力。`root-cause-debugging` 不只是修 bug，它是一个完整的**调查 → 修复 → 归档**闭环：
@@ -85,7 +93,10 @@ verify-change ──→ 发现问题 ──→ root-cause-debugging ──→ re
                                  Phase 5:    知识捕获（更新 specs / 加调试注释 / 提交）
 ```
 
+![](./assets/003.png)
+
 相比 Superpowers 的 `systematic-debugging`，`root-cause-debugging` 新增了：
+
 - **todo 跟踪** — 进入技能即创建进度看板，防止中断后丢失上下文
 - **知识沉淀询问** — 修复完成后主动询问是否将发现写入 specs / design / debug notes
 - **验证回路自动触发** — 被 `verify-change` 发现 CRITICAL 问题时自动调用，无需人工选择
@@ -189,14 +200,12 @@ superPlus 融合了：
 
 superPlus 是独立的工作流套件，不依赖也不扩展任一项目。
 
-## 致谢 / Acknowledgements
+## 致谢 
 
 superPlus 的设计深受以下开源项目的启发：
 
 - **OpenSpec** — [github.com/Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec)，MIT License，Copyright (c) 2025 Fission AI
 - **Superpowers** — [github.com/obra/superpowers](https://github.com/obra/superpowers)，MIT License，Copyright (c) 2025 Jesse Vincent
-
-本项目融合了 OpenSpec 的 artifact-driven 方法与 Superpowers 的行为塑造技能，并根据自身需求进行了重构和扩展。
 
 ## License
 
