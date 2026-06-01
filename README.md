@@ -144,6 +144,8 @@ verify-change ──→ 发现问题 ──→ root-cause-debugging ──→ re
 }
 ```
 
+安装后在 TUI 中输入 `/sp <skill-name>` 即可直接调用技能，如 `/sp exploring`、`/sp designing`。
+
 ### 其他平台（全局安装）
 
 **Claude Code:**

@@ -99,12 +99,38 @@ ${toolMapping}
   };
 
   return {
-    // Inject skills path into live config so OpenCode discovers superPlus skills
+    // Inject skills path and register slash command
     config: async (config) => {
       config.skills = config.skills || {};
       config.skills.paths = config.skills.paths || [];
       if (!config.skills.paths.includes(skillsDir)) {
         config.skills.paths.push(skillsDir);
+      }
+
+      // Register /sp command — dispatches to the right superPlus skill
+      config.command = config.command || {};
+      if (!config.command['sp']) {
+        config.command['sp'] = {
+          template: `The user wants to use a superPlus skill matching "$ARGUMENTS".
+
+Available skills:
+- exploring — Free-form problem exploration and requirement clarification
+- designing — Structured design documentation
+- write-plan-tasks — Generate proposal, specs, plan, and tasks
+- apply-change — TDD implementation with parallel subagents
+- verify-change — 5D verification against change specs
+- sync-specs — Merge delta specs into main spec library
+- archive-change — Finalize and archive completed changes
+- root-cause-debugging — Systematic root cause investigation and fix
+- test-driven-development — Red-green-refactor TDD cycle
+- using-git-worktrees — Isolate feature work with git worktrees
+- writing-skills — Create and edit skill documents
+- using-superplus — Entry point: how to use superPlus
+
+If a skill name was given in $ARGUMENTS, load its SKILL.md and follow the instructions. If not, ask the user which skill they need.`,
+          description: 'superPlus: /sp <skill-name> — run a superPlus skill',
+          subtask: false,
+        };
       }
     },
 

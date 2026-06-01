@@ -1,6 +1,6 @@
 {
   "name": "superplus",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "superPlus: spec-driven development workflow — design, plan, implement (TDD), verify, sync, archive",
   "author": {
     "name": "superPlus"

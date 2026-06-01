@@ -22,11 +22,25 @@ OpenCode 会自动克隆并注册所有 superPlus 技能。重启后即可使用
 }
 ```
 
+## 使用
+
+安装后在 TUI 中输入 `/sp <skill-name>` 即可直接调用 superPlus 技能：
+
+```
+/sp exploring      探索需求
+/sp designing      设计文档
+/sp apply-change   TDD 实现
+/sp verify-change  5D 验证
+```
+
+支持所有 12 个技能：`exploring`、`designing`、`write-plan-tasks`、`apply-change`、`verify-change`、`sync-specs`、`archive-change`、`root-cause-debugging`、`test-driven-development`、`using-git-worktrees`、`writing-skills`、`using-superplus`。
+
 ## Verification
 
 启动会话后检查：
 
 - 是否看到 **"You have superPlus"** 引导信息
+- 输入 `/` 查看命令列表，应看到 `sp — superPlus`
 - 运行 `skill` 工具能否列出所有 superPlus 技能
 
 ## 卸载
