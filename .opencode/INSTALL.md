@@ -24,16 +24,32 @@ OpenCode 会自动克隆并注册所有 superPlus 技能。重启后即可使用
 
 ## 使用
 
-安装后在 TUI 中输入 `/sp <skill-name>` 即可直接调用 superPlus 技能：
+安装后在 TUI 中输入 `/sp-<skill>`，每个技能对应一个独立命令，输入 `/` 即可看到所有选项：
 
 ```
-/sp exploring      探索需求
-/sp designing      设计文档
-/sp apply-change   TDD 实现
-/sp verify-change  5D 验证
+/sp-exploring          探索需求
+/sp-designing          设计文档
+/sp-apply-change       TDD 实现
+/sp-verify-change      5D 验证
+/sp-root-cause-debugging   根因调试
 ```
 
-支持所有 12 个技能：`exploring`、`designing`、`write-plan-tasks`、`apply-change`、`verify-change`、`sync-specs`、`archive-change`、`root-cause-debugging`、`test-driven-development`、`using-git-worktrees`、`writing-skills`、`using-superplus`。
+可用命令（共 12 个）：
+
+| 命令 | 技能 |
+|------|------|
+| `/sp-exploring` | exploring |
+| `/sp-designing` | designing |
+| `/sp-write-plan-tasks` | write-plan-tasks |
+| `/sp-apply-change` | apply-change |
+| `/sp-verify-change` | verify-change |
+| `/sp-sync-specs` | sync-specs |
+| `/sp-archive-change` | archive-change |
+| `/sp-root-cause-debugging` | root-cause-debugging |
+| `/sp-test-driven-development` | test-driven-development |
+| `/sp-using-git-worktrees` | using-git-worktrees |
+| `/sp-writing-skills` | writing-skills |
+| `/sp-using-superplus` | using-superplus |
 
 ## Verification
 

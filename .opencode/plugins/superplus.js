@@ -107,30 +107,35 @@ ${toolMapping}
         config.skills.paths.push(skillsDir);
       }
 
-      // Register /sp command — dispatches to the right superPlus skill
+      // Register individual /sp-<skill> commands for each superPlus skill
+      const SKILLS = [
+        { name: 'exploring',           desc: 'Free-form problem exploration and requirement clarification' },
+        { name: 'designing',           desc: 'Structured design documentation' },
+        { name: 'write-plan-tasks',    desc: 'Generate proposal, specs, plan, and tasks from design' },
+        { name: 'apply-change',        desc: 'TDD implementation with parallel subagents' },
+        { name: 'verify-change',       desc: '5D verification against change specs' },
+        { name: 'sync-specs',          desc: 'Merge delta specs into main spec library' },
+        { name: 'archive-change',      desc: 'Finalize and archive completed changes' },
+        { name: 'root-cause-debugging', desc: 'Systematic root cause investigation and fix' },
+        { name: 'test-driven-development', desc: 'Red-green-refactor TDD cycle' },
+        { name: 'using-git-worktrees', desc: 'Isolate feature work with git worktrees' },
+        { name: 'writing-skills',      desc: 'Create and edit skill documents' },
+        { name: 'using-superplus',     desc: 'Entry point: how to use superPlus skills' },
+      ];
       config.command = config.command || {};
-      if (!config.command['sp']) {
-        config.command['sp'] = {
-          template: `The user wants to use a superPlus skill matching "$ARGUMENTS".
+      for (const s of SKILLS) {
+        const cmdName = `sp-${s.name}`;
+        if (!config.command[cmdName]) {
+          config.command[cmdName] = {
+            template: `Execute the superPlus skill "${s.name}" to handle this request.
 
-Available skills:
-- exploring — Free-form problem exploration and requirement clarification
-- designing — Structured design documentation
-- write-plan-tasks — Generate proposal, specs, plan, and tasks
-- apply-change — TDD implementation with parallel subagents
-- verify-change — 5D verification against change specs
-- sync-specs — Merge delta specs into main spec library
-- archive-change — Finalize and archive completed changes
-- root-cause-debugging — Systematic root cause investigation and fix
-- test-driven-development — Red-green-refactor TDD cycle
-- using-git-worktrees — Isolate feature work with git worktrees
-- writing-skills — Create and edit skill documents
-- using-superplus — Entry point: how to use superPlus
-
-If a skill name was given in $ARGUMENTS, load its SKILL.md and follow the instructions. If not, ask the user which skill they need.`,
-          description: 'superPlus: /sp <skill-name> — run a superPlus skill',
-          subtask: false,
-        };
+1. Load the skill's SKILL.md from the skills directory
+2. Follow its instructions precisely
+3. ${s.desc}`,
+            description: `[superPlus] ${s.desc}`,
+            subtask: true,
+          };
+        }
       }
     },
 
