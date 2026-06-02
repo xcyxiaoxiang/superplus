@@ -128,12 +128,12 @@ ${toolMapping}
         if (!config.command[cmdName]) {
           config.command[cmdName] = {
             template: `Execute the superPlus skill "${s.name}" to handle this request.
+$ARGUMENTS
 
 1. Load the skill's SKILL.md from the skills directory
 2. Follow its instructions precisely
 3. ${s.desc}`,
             description: `[superPlus] ${s.desc}`,
-            subtask: true,
           };
         }
       }
