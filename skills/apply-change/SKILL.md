@@ -221,7 +221,7 @@ Ready for verify-change.
 | `write-plan-tasks` | **Required previous step** — provides tasks.md |
 | `verify-change` | **Required next step** — validates entire implementation |
 | `using-git-worktrees` | Ensures isolated workspace before starting |
-| `templates/tasks.md` | Task format reference |
+| `skills/write-plan-tasks/templates/tasks.md` | Task format reference |
 
 ---
 

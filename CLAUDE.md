@@ -62,7 +62,6 @@ Other skills:
 ```
 superPlus/
 ├── skills/              # 12 skills (7 core + 5 auxiliary)
-├── templates/           # 4 templates (proposal/delta-spec/plan/tasks)
 ├── hooks/               # Session-start hooks
 ├── scripts/             # Helper scripts
 ├── docs/

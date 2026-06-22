@@ -40,11 +40,6 @@ superPlus/
 │   ├── using-git-worktrees/
 │   ├── using-superplus/
 │   └── writing-skills/
-├── templates/           # Artifact templates
-│   ├── proposal.md
-│   ├── delta-spec.md
-│   ├── plan.md
-│   └── tasks.md
 ├── hooks/               # Cross-platform session-start hooks
 ├── scripts/             # Helper scripts
 ├── docs/
@@ -65,15 +60,11 @@ superPlus/
 │   ├── exploring/
 │   ├── designing/
 │   ├── write-plan-tasks/
+│   │   └── templates/   # Artifact templates
 │   ├── apply-change/
 │   ├── verify-change/
 │   ├── sync-specs/
 │   ├── archive-change/
-├── templates/           # Artifact templates
-│   ├── proposal.md
-│   ├── delta-spec.md
-│   ├── plan.md
-│   └── tasks.md
 ├── docs/changes/             # Active change directories
 │   └── archive/         # Archived changes
 ├── docs/

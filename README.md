@@ -173,7 +173,6 @@ ln -s ~/projects/superPlus/skills ~/.cursor/skills/superplus
 ```
 superPlus/
 ├── skills/              # 12 个技能（7 核心 + 5 辅助）
-├── templates/           # 4 个模板（proposal/delta-spec/plan/tasks）
 ├── hooks/               # 跨平台 session-start hook
 ├── scripts/             # 辅助脚本
 ├── .opencode/           # OpenCode 插件配置
