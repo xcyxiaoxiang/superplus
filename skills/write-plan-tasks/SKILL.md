@@ -58,7 +58,7 @@ Each artifact depends on the previous ones. Always check existing specs at `docs
 ### Step 0: Setup Change Directory
 
 ```bash
-mkdir -p docs/changes/<name>/specs
+mkdir -p docs/changes/<name>/2.specs
 ```
 
 **Determine change name** from the design document topic:
@@ -80,7 +80,7 @@ ls docs/specs/ 2>/dev/null
 
 **Read the approved design doc** from `docs/designs/YYYY-MM-DD-<topic>-design.md`.
 
-Extract from the design doc and write `docs/changes/<name>/proposal.md` using the template at `templates/proposal.md`:
+Extract from the design doc and write `docs/changes/<name>/1.proposal.md` using the template at `templates/1.proposal.md`:
 
 | Design Doc Section | → Proposal Section |
 |-------------------|-------------------|
@@ -93,7 +93,7 @@ Extract from the design doc and write `docs/changes/<name>/proposal.md` using th
 - **New Capabilities:** Each creates `specs/<capability>/spec.md`
 - **Modified Capabilities:** Each creates a delta spec in `specs/<capability>/spec.md`. Only include if spec-level behavior changes, not just implementation.
 
-Save to: `docs/changes/<name>/proposal.md`
+Save to: `docs/changes/<name>/1.proposal.md`
 
 ### Step 2: Create Specs
 
@@ -129,7 +129,7 @@ Extract capabilities from these sections of the approved design doc at `docs/des
 
 #### New Capabilities
 
-Create `docs/changes/<name>/specs/<capability>/spec.md` using `templates/delta-spec.md`:
+Create `docs/changes/<name>/2.specs/<capability>/spec.md` using `templates/2.delta-spec.md`:
 
 ```markdown
 ## ADDED Requirements
@@ -151,7 +151,7 @@ The system SHALL <behavior>.
 
 #### Modified Capabilities
 
-Read the existing spec at `docs/specs/<capability>/spec.md`. Create delta spec at `docs/changes/<name>/specs/<capability>/spec.md`:
+Read the existing spec at `docs/specs/<capability>/spec.md`. Create delta spec at `docs/changes/<name>/2.specs/<capability>/spec.md`:
 
 ```markdown
 ## MODIFIED Requirements
@@ -172,7 +172,7 @@ Read the existing spec at `docs/specs/<capability>/spec.md`. Create delta spec a
 
 ### Step 3: Create Implementation Plan
 
-Write `docs/changes/<name>/plan.md` using the template at `templates/plan.md`. This is the **primary architectural reference** for implementer subagents in apply-change — they read this to understand how the system fits together and why decisions were made. (The task-specific instructions come from `tasks.md`; plan.md provides the context to make those instructions make sense.)
+Write `docs/changes/<name>/3.plan.md` using the template at `templates/3.plan.md`. This is the **primary architectural reference** for implementer subagents in apply-change — they read this to understand how the system fits together and why decisions were made. (The task-specific instructions come from `tasks.md`; plan.md provides the context to make those instructions make sense.)
 
 **Boundary with tasks.md:** plan.md explains **why** the system is organized this way (architecture decisions, dependency reasoning, scope definitions). tasks.md contains **what exactly to do** (file paths, code snippets, commands, step-by-step instructions). If a subagent needs to understand a decision, read plan.md. If it needs to know which file to edit and what code to write, read tasks.md. When in conflict, tasks.md is the execution authority.
 
@@ -204,7 +204,7 @@ Extract these from the approved design doc and write a complete, self-contained 
 
 ### Step 4: Create Tasks
 
-Write `docs/changes/<name>/tasks.md` — this is the **detailed implementation plan** with granular task breakdown.
+Write `docs/changes/<name>/4.tasks.md` — this is the **detailed implementation plan** with granular task breakdown.
 
 **Each task is one action (2-5 minutes):**
 - "Write the failing test" — task
@@ -217,15 +217,15 @@ Write `docs/changes/<name>/tasks.md` — this is the **detailed implementation p
 
 ```
 docs/changes/<name>/
-├── proposal.md
-├── specs/<domain>/spec.md
-├── plan.md
-└── tasks.md            ← you are here
+├── 1.proposal.md
+├── 2.specs/<domain>/spec.md
+├── 3.plan.md
+└── 4.tasks.md            ← you are here
 ```
 
 List which files will be created or modified and what each is responsible for. This decomposition feeds into the task breakdown.
 
-**Task format using template at `templates/tasks.md`:**
+**Task format using template at `templates/4.tasks.md`:**
 
 ```markdown
 ## 1. <Component Name>
@@ -317,10 +317,10 @@ architecture soundness against the original design doc.
 
 | Artifact | Path |
 |----------|------|
-| Proposal | `docs/changes/<name>/proposal.md` |
-| Specs | `docs/changes/<name>/specs/**/*.md` |
-| Plan | `docs/changes/<name>/plan.md` |
-| Tasks | `docs/changes/<name>/tasks.md` |
+| Proposal | `docs/changes/<name>/1.proposal.md` |
+| Specs | `docs/changes/<name>/2.specs/**/*.md` |
+| Plan | `docs/changes/<name>/3.plan.md` |
+| Tasks | `docs/changes/<name>/4.tasks.md` |
 
 ## What to Check
 
@@ -392,10 +392,10 @@ Announce: "All artifacts created at `docs/changes/<name>/`. Ready for implementa
 |-------|-------------------|
 | `designing` | **Required previous step** — provides approved design |
 | `apply-change` | **Required next step** — implements tasks |
-| `templates/proposal.md` | Proposal template |
-| `templates/delta-spec.md` | Spec template |
-| `templates/plan.md` | Implementation plan template |
-| `templates/tasks.md` | Tasks template |
+| `templates/1.proposal.md` | Proposal template |
+| `templates/2.delta-spec.md` | Spec template |
+| `templates/3.plan.md` | Implementation plan template |
+| `templates/4.tasks.md` | Tasks template |
 
 ---
 
@@ -405,7 +405,7 @@ Announce: "All artifacts created at `docs/changes/<name>/`. Ready for implementa
 - Leave placeholders (TBD, TODO) in any artifact
 - Create tasks without exact file paths and code
 - Include implementation details in specs (specs = what, not how)
-- Modify main specs directly (always use delta specs in `docs/changes/<name>/specs/`)
+- Modify main specs directly (always use delta specs in `docs/changes/<name>/2.specs/`)
 - Skip creating any artifact (all four are required)
 - Skip the independent artifact review (Phase 2 in Step 5) — it catches what the creator is blind to
 - Skip fixing CRITICAL issues found in Phase 2 (must fix, then re-review)

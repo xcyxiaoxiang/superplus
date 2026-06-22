@@ -22,7 +22,7 @@ exploring → designing ──→ write-plan-tasks ──→ apply-change ──
 |-------|------|-------|--------|
 | `exploring` | Requirements unclear | Problem statement | Exploration summary (in conversation) |
 | `designing` | Design is needed | Exploration summary / clear requirements | `docs/designs/YYYY-MM-DD-<topic>-design.md` |
-| `write-plan-tasks` | Design approved | Design doc | `docs/changes/<name>/{proposal,specs,plan,tasks}.md` |
+| `write-plan-tasks` | Design approved | Design doc | `docs/changes/<name>/{1.proposal,2.specs,3.plan,4.tasks}.md` |
 | `apply-change` | Tasks ready | `tasks.md` | Implemented code (TDD, all tests passing) |
 | `verify-change` | Implementation done | Change directory | 5D verification report + issues triage (CRITICAL → `root-cause-debugging` fix loop) |
 | `sync-specs` | Verify passed | Delta specs | Updated `docs/specs/<capability>/spec.md` |
@@ -78,7 +78,7 @@ superPlus/
 - **Change naming**: kebab-case, starts with verb (add/fix/update/remove/optimize)
 - **Design docs**: `docs/designs/YYYY-MM-DD-<topic>-design.md`
 - **Main specs**: `docs/specs/<capability>/spec.md`
-- **Change artifacts**: `docs/changes/<name>/{proposal,specs/*,plan,tasks}.md`
+- **Change artifacts**: `docs/changes/<name>/{1.proposal,2.specs/*,3.plan,4.tasks}.md`
 - **Archives**: `docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**: Always write failing test first, then implement, then verify
 - **All artifacts required**: proposal + specs + plan + tasks for every change

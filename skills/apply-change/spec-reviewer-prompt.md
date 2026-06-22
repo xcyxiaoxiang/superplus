@@ -4,7 +4,7 @@ Use this template when dispatching a spec compliance reviewer subagent.
 
 **Purpose:** Verify implementer built what was requested (nothing more, nothing less)
 
-**Controller instruction:** Before dispatching, read the delta spec at `docs/changes/<name>/specs/<capability>/spec.md`. Copy the **relevant requirement section(s)** for this task into the `[Original Specification]` block below. Do NOT make the subagent read the file — paste the text directly.
+**Controller instruction:** Before dispatching, read the delta spec at `docs/changes/<name>/2.specs/<capability>/spec.md`. Copy the **relevant requirement section(s)** for this task into the `[Original Specification]` block below. Do NOT make the subagent read the file — paste the text directly.
 
 ```
 Task tool (general-purpose):
@@ -14,7 +14,7 @@ Task tool (general-purpose):
 
     ## Original Specification（来自 spec 文件，权威基准）
 
-    [Controller: 粘贴 docs/changes/<name>/specs/<capability>/spec.md 中与当前任务相关的 requirement 段]
+    [Controller: 粘贴 docs/changes/<name>/2.specs/<capability>/spec.md 中与当前任务相关的 requirement 段]
 
     ## Task Requirements（来自 tasks.md，辅助参考）
 

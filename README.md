@@ -189,7 +189,7 @@ superPlus/
 - **变更命名**：kebab-case，以动词开头（add/fix/update/remove/optimize）
 - **设计文档**：`docs/designs/YYYY-MM-DD-<topic>-design.md`
 - **主规格**：`docs/specs/<capability>/spec.md`
-- **变更产物**：`docs/changes/<name>/{proposal,specs/*,plan,tasks}.md`
+- **变更产物**：`docs/changes/<name>/{1.proposal,2.specs/*,3.plan,4.tasks}.md`
 - **归档**：`docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**：始终先写失败测试，再实现，再验证
 - **所有产物必需**：每个变更必须包含 proposal + specs + plan + tasks

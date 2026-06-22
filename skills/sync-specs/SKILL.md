@@ -37,10 +37,10 @@ digraph when_to_use {
 ### Step 1: Discover Delta Specs
 
 ```bash
-ls docs/changes/<name>/specs/**/*.md 2>/dev/null
+ls docs/changes/<name>/2.specs/**/*.md 2>/dev/null
 ```
 
-Each delta spec maps to a capability: `docs/changes/<name>/specs/<capability>/spec.md`
+Each delta spec maps to a capability: `docs/changes/<name>/2.specs/<capability>/spec.md`
 
 Main specs live at: `docs/specs/<capability>/spec.md`
 

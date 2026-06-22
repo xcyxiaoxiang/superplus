@@ -43,10 +43,10 @@ Read available artifacts from `docs/changes/<name>/`:
 
 | Artifact | Path | Required? |
 |----------|------|-----------|
-| tasks.md | `docs/changes/<name>/tasks.md` | Required |
-| specs/**/*.md | `docs/changes/<name>/specs/**/*.md` | Optional |
-| plan.md | `docs/changes/<name>/plan.md` | Optional |
-| proposal.md | `docs/changes/<name>/proposal.md` | Optional |
+| tasks.md | `docs/changes/<name>/4.tasks.md` | Required |
+| specs/**/*.md | `docs/changes/<name>/2.specs/**/*.md` | Optional |
+| plan.md | `docs/changes/<name>/3.plan.md` | Optional |
+| proposal.md | `docs/changes/<name>/1.proposal.md` | Optional |
 
 Note what's missing for graceful degradation (Step 8).
 

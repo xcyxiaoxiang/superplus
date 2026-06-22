@@ -43,7 +43,7 @@ digraph when_to_use {
 
 ### Step 0: Read and Analyze Tasks
 
-Read `docs/changes/<name>/tasks.md`. Identify:
+Read `docs/changes/<name>/4.tasks.md`. Identify:
 
 - **Total tasks** — count checkboxes `- [ ]`
 - **Already completed** — count `- [x]`
@@ -117,7 +117,7 @@ After each subagent completes implementation:
 #### Stage 1: Spec Compliance Review
 
 **Before dispatching:**
-1. Identify the relevant spec file: `docs/changes/<name>/specs/<capability>/spec.md`
+1. Identify the relevant spec file: `docs/changes/<name>/2.specs/<capability>/spec.md`
 2. Read it and extract the requirement sections that this task implements
 3. Inject the extracted spec text into the `[Original Specification]` block in `spec-reviewer-prompt.md`
 
@@ -186,7 +186,7 @@ If tests fail:
 When all tasks complete:
 
 1. **Final full test run** — entire test suite passes
-2. **Spec audit** — each requirement in `docs/changes/<name>/specs/**/spec.md` is either implemented (→ test exists) or explicitly deferred
+2. **Spec audit** — each requirement in `docs/changes/<name>/2.specs/**/spec.md` is either implemented (→ test exists) or explicitly deferred
 3. **`git diff --stat`** — review total change scope（optional）
 
 Announce results:
@@ -221,7 +221,7 @@ Ready for verify-change.
 | `write-plan-tasks` | **Required previous step** — provides tasks.md |
 | `verify-change` | **Required next step** — validates entire implementation |
 | `using-git-worktrees` | Ensures isolated workspace before starting |
-| `skills/write-plan-tasks/templates/tasks.md` | Task format reference |
+| `skills/write-plan-tasks/templates/4.tasks.md` | Task format reference |
 
 ---
 
