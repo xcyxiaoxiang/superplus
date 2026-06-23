@@ -1,6 +1,6 @@
 # superPlus — AI-Native Spec-Driven Development Kit
 
-superPlus is a **spec-driven development workflow** that merges OpenSpec's artifact-driven approach with Superpowers' behavior-shaping skills. It provides 7 core workflow skills plus 5 auxiliary skills for a complete development lifecycle.
+superPlus is a **spec-driven development workflow** that merges OpenSpec's artifact-driven approach with Superpowers' behavior-shaping skills. It provides 8 core workflow skills plus 5 auxiliary skills for a complete development lifecycle.
 
 ## Workflow
 
@@ -14,6 +14,9 @@ exploring → designing ──→ write-plan-tasks ──→ apply-change ──
                                                                      │
                                                                      ▼
                                                                  re-verify
+
+quick-change ──→ 4-step condensed flow (Quick Spec → Implement → Verify → Finalize)
+(for small changes)
 ```
 
 ## Skills
@@ -27,15 +30,16 @@ exploring → designing ──→ write-plan-tasks ──→ apply-change ──
 | `verify-change` | Implementation done | Change directory | 5D verification report + issues triage (CRITICAL → `root-cause-debugging` fix loop) |
 | `sync-specs` | Verify passed | Delta specs | Updated `docs/specs/<capability>/spec.md` |
 | `archive-change` | Sync done | Change directory | Moved to `docs/changes/archive/YYYY-MM-DD-<name>/` |
+| `quick-change` | Small change needed | Problem description | Condensed 4-step: Quick Spec → Implement → Verify → Finalize |
 
 ## Directory Structure
 
 ```
 superPlus/
-├── skills/              # 12 skills (7 core + 5 auxiliary)
+├── skills/              # 13 skills (8 core + 5 auxiliary)
 │   ├── exploring/       ├── designing/        ├── write-plan-tasks/
 │   ├── apply-change/    ├── verify-change/    ├── sync-specs/
-│   ├── archive-change/  ├── root-cause-debugging/
+│   ├── archive-change/  ├── quick-change/     ├── root-cause-debugging/
 │   ├── test-driven-development/
 │   ├── using-git-worktrees/
 │   ├── using-superplus/
@@ -65,6 +69,7 @@ superPlus/
 │   ├── verify-change/
 │   ├── sync-specs/
 │   ├── archive-change/
+│   ├── quick-change/
 ├── docs/changes/             # Active change directories
 │   └── archive/         # Archived changes
 ├── docs/

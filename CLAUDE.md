@@ -7,13 +7,16 @@ superPlus is a **spec-driven development workflow** that guides Claude Code thro
 ```
 exploring ──→ designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
 (explore)     (design)      (proposal + plan)   (TDD + execute)   (5D validate)     (merge specs)    (finalize)
-                                                                         │
-                                                                         ▼
-                                                                root-cause-debugging
-                                                                 (issues triage & fix)
-                                                                         │
-                                                                         ▼
-                                                                     re-verify
+                                                                          │
+                                                                          ▼
+                                                                 root-cause-debugging
+                                                                  (issues triage & fix)
+                                                                          │
+                                                                          ▼
+                                                                      re-verify
+
+quick-change ──→ 4-step condensed flow (Quick Spec → Implement → Verify → Finalize)
+(for small changes)
 ```
 
 ## Getting Started
@@ -48,6 +51,7 @@ This loads the skill discipline rules and shows all available skills. Then follo
 | `verify-change` | Implementation done | 5D verification report + issues triage (CRITICAL → `root-cause-debugging` fix loop) |
 | `sync-specs` | Verify passed | Updated main specs (`docs/specs/`) |
 | `archive-change` | All done | Archived (`docs/changes/archive/`) |
+| `quick-change` | Small change needed | Condensed 4-step: Quick Spec → Implement → Verify → Finalize |
 
 Other skills:
 
@@ -61,7 +65,7 @@ Other skills:
 
 ```
 superPlus/
-├── skills/              # 12 skills (7 core + 5 auxiliary)
+├── skills/              # 13 skills (8 core + 5 auxiliary)
 ├── hooks/               # Session-start hooks
 ├── scripts/             # Helper scripts
 ├── docs/

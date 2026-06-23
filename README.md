@@ -4,20 +4,23 @@
 
 # superPlus — AI-Native Spec-Driven Development Kit
 
-superPlus 是一个**规格驱动开发工作流**，融合了 OpenSpec 的 artifact-driven 方法与 Superpowers 的行为塑造技能。它提供 7 个核心工作流技能 + 5 个辅助技能，覆盖完整的开发生命周期：探索 → 设计 → 规划 → 实现（TDD）→ 验证 → 同步 → 归档。
+superPlus 是一个**规格驱动开发工作流**，融合了 OpenSpec 的 artifact-driven 方法与 Superpowers 的行为塑造技能。它提供 8 个核心工作流技能 + 5 个辅助技能，覆盖完整的开发生命周期。
 
 ## 工作流
 
 ```
 exploring ──→ designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
 (explore)     (design)      (proposal + plan)   (TDD + execute)   (5D validate)     (merge specs)    (finalize)
-                                                                       │
-                                                                       ▼
-                                                              root-cause-debugging
-                                                               (issues triage & fix)
-                                                                       │
-                                                                       ▼
-                                                                   re-verify
+                                                                        │
+                                                                        ▼
+                                                               root-cause-debugging
+                                                                (issues triage & fix)
+                                                                        │
+                                                                        ▼
+                                                                    re-verify
+
+quick-change ──→ 4 步浓缩流程（Quick Spec → Implement → Verify → Finalize）
+（适合小型变更）
 ```
 
 ![工作流](./assets/002.jpg)
@@ -33,6 +36,7 @@ exploring ──→ designing ──→ write-plan-tasks ──→ apply-change 
 | `verify-change` | 实现完成 | 5D 验证报告 + Issues Triage（发现问题自动接入 `root-cause-debugging` 修复回路） |
 | `sync-specs` | 验证通过 | 智能合并 delta specs → 主规格 (`docs/specs/`) |
 | `archive-change` | 全部完成 | 变更归档 (`docs/changes/archive/`) |
+| `quick-change` | 小型变更 | 4 步浓缩流程：Quick Spec → Implement → Verify → Finalize |
 
 ## 辅助技能
 
@@ -172,7 +176,7 @@ ln -s ~/projects/superPlus/skills ~/.cursor/skills/superplus
 
 ```
 superPlus/
-├── skills/              # 12 个技能（7 核心 + 5 辅助）
+├── skills/              # 13 个技能（8 核心 + 5 辅助）
 ├── hooks/               # 跨平台 session-start hook
 ├── scripts/             # 辅助脚本
 ├── .opencode/           # OpenCode 插件配置

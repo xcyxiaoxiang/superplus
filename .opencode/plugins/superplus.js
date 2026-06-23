@@ -120,6 +120,7 @@ ${toolMapping}
         { name: 'test-driven-development', desc: 'Red-green-refactor TDD cycle' },
         { name: 'using-git-worktrees', desc: 'Isolate feature work with git worktrees' },
         { name: 'writing-skills',      desc: 'Create and edit skill documents' },
+        { name: 'quick-change',        desc: 'Condensed 4-step workflow for small changes (Quick Spec → Implement → Verify → Finalize)' },
         { name: 'using-superplus',     desc: 'Entry point: how to use superPlus skills' },
       ];
       config.command = config.command || {};
