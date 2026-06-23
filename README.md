@@ -105,16 +105,14 @@ verify-change ──→ 发现问题 ──→ root-cause-debugging ──→ re
 - **知识沉淀询问** — 修复完成后主动询问是否将发现写入 specs / design / debug notes
 - **验证回路自动触发** — 被 `verify-change` 发现 CRITICAL 问题时自动调用，无需人工选择
 
-### 子代理并行 TDD
+### 两条路径：按需选择
 
-`apply-change` 按依赖图自动调度子代理：
+superPlus 提供两条路径，按变更规模自动选择：
 
-- **独立组件** → 并行执行
-- **共享基础设施** → 先实现后并行
-- **每个任务** → TDD 纪律（失败测试 → 实现 → 全量测试）
-- **两阶段审查** → spec 合规审查 → 代码质量审查
-
-这在多文件变更中显著加速，同时保持每个单元的测试覆盖率。
+| 路径 | 步骤数 | 制品格式 | 适合场景 |
+|------|--------|---------|---------|
+| **全流程** | 7 步 | 4 件套（proposal + specs + plan + tasks） | 中大型需求、新功能 |
+| **`/sp-quick-change`** | 4 步 | 单文件 `1.change.md` | 小型改动（加字段、改校验、修小 bug） |
 
 ### 一键制品生成
 
@@ -127,6 +125,90 @@ verify-change ──→ 发现问题 ──→ root-cause-debugging ──→ re
 ### 完整归档链路
 
 `archive-change` 是收尾闭环：验证 sync 状态 → 确认无遗留 CRITICAL → 归档到 `docs/changes/archive/`。OpenSpec 和 Superpowers 都没有这一步。
+
+### 全流程制品管道
+
+从设计到实现的完整链：
+
+```
+   ┌──────────┐
+   │ 设计文档  │  docs/designs/YYYY-MM-DD-<topic>-design.md
+   └────┬─────┘
+        │ write-plan-tasks
+        ▼
+   ┌──────────────┐
+   │ 1.proposal   │  为什么做这个变更（Why）
+   ├──────────────┤
+   │ 2.specs/     │  做什么（What）—— delta 规格，按能力分目录
+   ├──────────────┤
+   │ 3.plan       │  怎么做（How）—— 架构方案、数据流、风险
+   ├──────────────┤
+   │ 4.tasks      │  步骤（Steps）—— 可执行的任务列表
+   └────┬─────────┘
+        │ apply-change（TDD）
+        ▼
+   ┌──────────┐
+   │  code     │  实现代码（测试通过）
+   └────┬─────┘
+        │ verify-change → sync-specs
+        ▼
+   ┌──────────┐
+   │ 主规格库   │  docs/specs/<capability>/spec.md
+   └──────────┘
+```
+
+每个步骤不能跳过。没有 plan 不能写 tasks，没有 tasks 不能写代码。
+
+**quick-change** 使用简化管道：单文件 `1.change.md`（合并 proposal + specs + plan + tasks），其余步骤一致。
+
+### 子代理调度模型
+
+`apply-change` 根据 `4.tasks.md` 的依赖图智能调度子代理：
+
+```
+                    4.tasks.md
+                        │
+                 依赖图分析
+                   ╱      ╲
+         独立任务          共享依赖
+         并行 dispatch     先串行后并行
+          ╱    ╲               │
+      @fixer  @fixer        @fixer
+       (TDD)   (TDD)         (TDD)
+          ╲    ╱               │
+          合并验证 ←───────────┘
+              │
+         spec 合规审查 ─→ 代码质量审查
+              │
+          全部测试通过
+```
+
+- **独立组件** → 并行执行
+- **共享基础设施** → 先实现后并行
+- **每个任务** → TDD 纪律（失败测试 → 实现 → 全量测试）
+- **两阶段审查** → spec 合规审查 → 代码质量审查
+
+### 宏观工作流全景
+
+```
+                ┌────────────────── 核心 7 步 ──────────────────┐
+                │                                                │
+  exploring ──→ designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
+  (探索需求)     (设计架构)     (生成制品)           (TDD 实现)      (5D 验证)          (合并规格)      (归档收尾)
+                    │               │                     │              │
+                    ▼               ▼                     ▼              ▼
+               docs/designs/   docs/changes/<name>/    src/ code    docs/specs/
+                                                                          │
+                                                                          ▼
+                                                                   docs/changes/archive/
+
+quick-change ──→ 4 步浓缩：Quick Spec → Implement → Verify → Finalize（适合小型变更）
+```
+
+| 路径 | 适用场景 | 步骤数 | 制品 |
+|------|---------|--------|------|
+| **全流程** | 中大型需求 | 7 步 | 4 件套 (proposal + specs + plan + tasks) |
+| **quick-change** | 小型改动（加字段、改校验、修小 bug） | 4 步 | 单文件 `1.change.md` |
 
 ## 安装
 
@@ -211,6 +293,27 @@ superPlus 的设计深受以下开源项目的启发：
 
 - **OpenSpec** — [github.com/Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec)，MIT License，Copyright (c) 2025 Fission AI
 - **Superpowers** — [github.com/obra/superpowers](https://github.com/obra/superpowers)，MIT License，Copyright (c) 2025 Jesse Vincent
+
+## 版本记录
+
+### v0.2.2 — Quick-Change 技能 (2026-06-23)
+
+- **新增** `quick-change` 技能 — 4 步浓缩流程（Quick Spec → Implement → Verify → Finalize），用于加字段、改校验、修小 bug 等小型变更
+- **新增** `/sp-quick-change` 斜杠命令
+- **新增** `docs/specs/quick-change/spec.md` 主规格
+- **改进** 模板文件重命名加序号（`1.proposal.md` ~ `4.tasks.md`）
+- **改进** `templates/` 迁移至 `skills/write-plan-tasks/templates/`
+- **改进** 产出物路径同步加序号
+- **文档** AGENTS.md / README.md / CLAUDE.md 同步
+
+### v0.2.1 — 命令与插件 (2026-06-21)
+
+- **新增** OpenCode plugin 机制，通过 `config` hook 自动注册 skills 路径
+- **新增** 12 个 `/sp-*` 斜杠命令，支持在 TUI 中直接调用 superPlus 技能
+- **新增** Logo 集成
+- **改进** 命令改为对话流内执行（移除 `subtask: true`）
+- **改进** 模板支持 `$ARGUMENTS` 捕获用户附加文本
+- **文档** 四平台 INSTALL.md 统一精简，README 同步
 
 ## License
 
