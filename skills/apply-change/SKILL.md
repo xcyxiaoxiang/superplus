@@ -43,7 +43,7 @@ digraph when_to_use {
 
 ### Step 0: Read and Analyze Tasks
 
-Read `docs/changes/<name>/4.tasks.md`. Identify:
+Read `docs/changes/<name>/2.tasks.md`. Identify:
 
 - **Total tasks** — count checkboxes `- [ ]`
 - **Already completed** — count `- [x]`
@@ -69,34 +69,24 @@ Group 3 (sequential): Task F (depends on D+E)
 
 Dispatch one subagent per independent task, or one at a time for dependent tasks (wait for completion before the next).
 
-**Subagent dispatch template:**
+**Subagent dispatch template (see `./implementer-prompt.md` for full template):**
+
+Key context fields controller MUST fill:
 
 ```markdown
-## Objective
-Implement Task N: <task name>
-
-## Task Description
-<FULL TEXT of task from tasks.md — paste it, don't make subagent read file>
-
-## Context
-- Change directory: docs/changes/<name>/
-- Existing code structure: <brief summary>
-- Dependencies: <what's already implemented>
-- What this task connects to: <upstream/downstream context>
-
-## Rules
-1. TDD: write failing test → verify fails → write implementation → verify passes
-2. Each task should be 1-3 file edits max
-3. Do NOT modify files outside this task's scope
-
-## Report Format
-When done, report:
-- **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
-- What you implemented
-- Tests written and results
-- Files changed
-- Any concerns or blockers
+## Context (9 required fields)
+1. **Change Overview** — paste from tasks.md Context section (2-4 sentences)
+2. **Domain Context** — paste from tasks.md Domain Context section (Key Concepts, Business Flow Position, Data Semantics). Subagents need to understand the business world they're operating in.
+3. **Architecture & Data Flow** — paste from tasks.md Architecture section (ASCII diagram + Component Responsibilities + Key Interfaces with types and semantics)
+4. **Reference Code** — paste from tasks.md Reference Code section (real code snippets from the project). Subagents learn by example, not by description.
+5. **Preceding Tasks** — summary of classes/interfaces/method signatures created by completed tasks (prevents subagent from inventing wrong interfaces)
+6. **Cross-Cutting Rules** — paste from tasks.md Cross-Cutting Concerns section (Error Handling / Logging / Configuration / Coding Conventions with enough detail to follow without guessing)
+7. **Boundaries** — files and areas the subagent MUST NOT touch (prevents scope creep)
+8. **Design Reference** — design doc + specs + tasks path links
+9. **Test Environment** — test framework, run command, runtime (from tasks.md Testing Strategy)
 ```
+
+**Why mandatory:** Subagent context quality directly determines implementation quality. Skipping context = subagent drifts or misses requirements. See `./implementer-prompt.md` for full template with Controller Checklist.
 
 ### Step 2: TDD Requirements
 
@@ -117,13 +107,13 @@ After each subagent completes implementation:
 #### Stage 1: Spec Compliance Review
 
 **Before dispatching:**
-1. Identify the relevant spec file: `docs/changes/<name>/2.specs/<capability>/spec.md`
-2. Read it and extract the requirement sections that this task implements
-3. Inject the extracted spec text into the `[Original Specification]` block in `spec-reviewer-prompt.md`
+1. Read the full spec file: `docs/changes/<name>/1.specs/<capability>/spec.md`
+2. Copy the **full spec content** into the `[Original Specification]` block in `spec-reviewer-prompt.md` — not just "relevant" sections, the complete spec. This lets the reviewer check for conflicts with adjacent requirements.
+3. Also fill the `[Context]` block: Architecture + Cross-Cutting Rules from tasks.md header
 
 This gives the reviewer the **authoritative spec text** (not just the task description) as reference, preventing translation drift between specs → tasks → review.
 
-Dispatch a spec reviewer subagent using `./spec-reviewer-prompt.md`.
+Dispatch a spec reviewer subagent using `./spec-reviewer-prompt.md`. See the **Controller Checklist** at the bottom of that file for required fields.
 
 **Reviewer verifies (against spec, not just task text):**
 - All requirements implemented (nothing missing)
@@ -140,11 +130,17 @@ Dispatch a spec reviewer subagent using `./spec-reviewer-prompt.md`.
 
 **Only after spec compliance passes.** Dispatch a code quality reviewer using `./code-quality-reviewer-prompt.md`.
 
-**Reviewer checks:**
-- Clean, maintainable code
-- Each file has one clear responsibility
-- Units decomposed for independent understanding/testing
-- No new large files or significant growth of existing files
+**Before dispatching:**
+1. Fill the `[Context]` block: Architecture + Cross-Cutting Rules from tasks.md header
+2. Paste the implementer's completion report
+
+**Reviewer checks (19-point checklist):**
+- Code standards (naming, comments, formatting)
+- Structure (single responsibility, decomposition, interface clarity, file size)
+- Error handling (exception patterns, meaningful messages, no swallowed exceptions)
+- Logging (appropriate levels, key operations, sufficient context)
+- Testing (behavior verification, path coverage, naming)
+- Complexity (nesting depth, method length, duplication)
 
 **If quality review fails:**
 - Same subagent fixes quality issues
@@ -186,7 +182,7 @@ If tests fail:
 When all tasks complete:
 
 1. **Final full test run** — entire test suite passes
-2. **Spec audit** — each requirement in `docs/changes/<name>/2.specs/**/spec.md` is either implemented (→ test exists) or explicitly deferred
+2. **Spec audit** — each requirement in `docs/changes/<name>/1.specs/**/spec.md` is either implemented (→ test exists) or explicitly deferred
 3. **`git diff --stat`** — review total change scope（optional）
 
 Announce results:
@@ -221,7 +217,7 @@ Ready for verify-change.
 | `write-plan-tasks` | **Required previous step** — provides tasks.md |
 | `verify-change` | **Required next step** — validates entire implementation |
 | `using-git-worktrees` | Ensures isolated workspace before starting |
-| `skills/write-plan-tasks/templates/4.tasks.md` | Task format reference |
+| `skills/write-plan-tasks/templates/2.tasks.md` | Task format reference |
 
 ---
 

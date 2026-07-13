@@ -10,7 +10,7 @@ superPlus 是一个**规格驱动开发工作流**，融合了 OpenSpec 的 arti
 
 ```
 exploring ──→ designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
-(explore)     (design)      (proposal + plan)   (TDD + execute)   (5D validate)     (merge specs)    (finalize)
+(explore)     (design)      (specs + tasks)     (TDD + execute)   (5D validate)     (merge specs)    (finalize)
                                                                         │
                                                                         ▼
                                                                root-cause-debugging
@@ -31,7 +31,7 @@ quick-change ──→ 4 步浓缩流程（Quick Spec → Implement → Verify �
 |------|----------|---------|
 | `exploring` | 需求不明确 | 探索摘要（对话中），为设计铺路 |
 | `designing` | 需求明确或探索完成 | 设计文档 (`docs/designs/`)，含架构、决策、范围 |
-| `write-plan-tasks` | 设计获批 | 全套制品：proposal + specs + plan + tasks (`docs/changes/<name>/`) |
+| `write-plan-tasks` | 设计获批 | 全套制品：specs + tasks (`docs/changes/<name>/`) |
 | `apply-change` | 任务就绪 | 子代理并行 TDD 实现 + 两阶段审查，测试通过 |
 | `verify-change` | 实现完成 | 5D 验证报告 + Issues Triage（发现问题自动接入 `root-cause-debugging` 修复回路） |
 | `sync-specs` | 验证通过 | 智能合并 delta specs → 主规格 (`docs/specs/`) |
@@ -54,7 +54,7 @@ superPlus 的定位很明确：**同时补上 OpenSpec 和 Superpowers 的短板
 
 | 维度 | OpenSpec | Superpowers | **superPlus** |
 |------|----------|-------------|---------------|
-| **Spec 能力** | ⭐⭐⭐ 核心优势，artifact DAG | ⭐ 较弱，缺乏完整 spec 体系 | ⭐⭐⭐ 完整 spec 管道：proposal → specs → plan → tasks |
+| **Spec 能力** | ⭐⭐⭐ 核心优势，artifact DAG | ⭐ 较弱，缺乏完整 spec 体系 | ⭐⭐⭐ 完整 spec 管道：specs → tasks |
 | **编码能力** | ⭐ 较弱，无实现技能 | ⭐⭐⭐ 核心优势，TDD 驱动 | ⭐⭐⭐ 子代理并行 TDD + 两阶段审查 |
 | **调试能力** | ❌ 无 | ⭐⭐ systematic-debugging | ⭐⭐⭐ `root-cause-debugging`：5 阶段 + todo 跟踪 + 知识捕获 + 验证回路自动触发 |
 | **验证能力** | ⭐⭐⭐ 3D 验证（完备/正确/一致） | ❌ 无 | ⭐⭐⭐⭐ 5D 验证（+ 业务流完整性 + 字段一致性）+ 7 轮交叉检查 |
@@ -65,11 +65,11 @@ superPlus 的定位很明确：**同时补上 OpenSpec 和 Superpowers 的短板
 OpenSpec 擅长需求分析但不碰实现，Superpowers 擅长实现但不强调 spec。superPlus 用一套完整的制品管道把两端串起来：
 
 ```
-proposal.md ──→ specs/*.md ──→ plan.md ──→ tasks.md ──→ code (TDD)
-   (为什么)       (做什么)       (怎么做)     (步骤)       (实现)
+specs/*.md ──→ tasks.md ──→ code (TDD)
+   (做什么)     (怎么做+步骤)  (实现)
 ```
 
-且每个步骤都不能跳过——没有 plan 不能写 tasks，没有 tasks 不能写代码。
+且每个步骤都不能跳过——没有 specs 不能写 tasks，没有 tasks 不能写代码。
 
 ### 5D 验证 + 7 轮交叉检查
 
@@ -111,7 +111,7 @@ superPlus 提供两条路径，按变更规模自动选择：
 
 | 路径 | 步骤数 | 制品格式 | 适合场景 |
 |------|--------|---------|---------|
-| **全流程** | 7 步 | 4 件套（proposal + specs + plan + tasks） | 中大型需求、新功能 |
+| **全流程** | 7 步 | 2 件套（specs + tasks） | 中大型需求、新功能 |
 | **`/sp-quick-change`** | 4 步 | 单文件 `1.change.md` | 小型改动（加字段、改校验、修小 bug） |
 
 ### 一键制品生成
@@ -137,13 +137,9 @@ superPlus 提供两条路径，按变更规模自动选择：
         │ write-plan-tasks
         ▼
    ┌──────────────┐
-   │ 1.proposal   │  为什么做这个变更（Why）
+   │ 1.specs/     │  做什么（What）—— delta 规格，按能力分目录
    ├──────────────┤
-   │ 2.specs/     │  做什么（What）—— delta 规格，按能力分目录
-   ├──────────────┤
-   │ 3.plan       │  怎么做（How）—— 架构方案、数据流、风险
-   ├──────────────┤
-   │ 4.tasks      │  步骤（Steps）—— 可执行的任务列表
+   │ 2.tasks      │  怎么做+步骤（How + Steps）—— 架构方案 + 可执行任务列表
    └────┬─────────┘
         │ apply-change（TDD）
         ▼
@@ -157,16 +153,16 @@ superPlus 提供两条路径，按变更规模自动选择：
    └──────────┘
 ```
 
-每个步骤不能跳过。没有 plan 不能写 tasks，没有 tasks 不能写代码。
+每个步骤不能跳过。没有 specs 不能写 tasks，没有 tasks 不能写代码。
 
-**quick-change** 使用简化管道：单文件 `1.change.md`（合并 proposal + specs + plan + tasks），其余步骤一致。
+**quick-change** 使用简化管道：单文件 `1.change.md`（合并 specs + tasks），其余步骤一致。
 
 ### 子代理调度模型
 
-`apply-change` 根据 `4.tasks.md` 的依赖图智能调度子代理：
+`apply-change` 根据 `2.tasks.md` 的依赖图智能调度子代理：
 
 ```
-                    4.tasks.md
+                    2.tasks.md
                         │
                  依赖图分析
                    ╱      ╲
@@ -207,7 +203,7 @@ quick-change ──→ 4 步浓缩：Quick Spec → Implement → Verify → Fin
 
 | 路径 | 适用场景 | 步骤数 | 制品 |
 |------|---------|--------|------|
-| **全流程** | 中大型需求 | 7 步 | 4 件套 (proposal + specs + plan + tasks) |
+| **全流程** | 中大型需求 | 7 步 | 2 件套 (specs + tasks) |
 | **quick-change** | 小型改动（加字段、改校验、修小 bug） | 4 步 | 单文件 `1.change.md` |
 
 ## 安装
@@ -275,10 +271,10 @@ superPlus/
 - **变更命名**：kebab-case，以动词开头（add/fix/update/remove/optimize）
 - **设计文档**：`docs/designs/YYYY-MM-DD-<topic>-design.md`
 - **主规格**：`docs/specs/<capability>/spec.md`
-- **变更产物**：`docs/changes/<name>/{1.proposal,2.specs/*,3.plan,4.tasks}.md`
+- **变更产物**：`docs/changes/<name>/{1.specs/*,2.tasks}.md`
 - **归档**：`docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**：始终先写失败测试，再实现，再验证
-- **所有产物必需**：每个变更必须包含 proposal + specs + plan + tasks
+- **所有产物必需**：每个变更必须包含 specs + tasks
 ## 起源
 
 superPlus 融合了：
@@ -296,12 +292,43 @@ superPlus 的设计深受以下开源项目的启发：
 
 ## 版本记录
 
+### v1.0.0 — 核心工作流重构 (2026-07-13)
+
+从 v0.2.2 到 v1.0.0 是一次全面的核心工作流重构。变更范围覆盖 write-plan-tasks、apply-change、verify-change 三个核心技能。
+
+**工作流精简：**
+- **删除 proposal/plan 工件**，4 → 2 工件（specs + tasks）
+- 原 proposal（design 摘要）和 plan（执行计划）的信息合并到 tasks.md 头部
+- 审阅节点从 5 个减少到 3 个（design → specs → tasks）
+
+**tasks.md 模板强化：**
+- 头部从 7 个 section 扩展到 **9 个**：新增 **Domain Context**（业务领域信息）和 **Reference Code**（参考代码片段）
+- 现有 section 全部子结构化（Architecture → Component Responsibilities + Key Interfaces；Cross-Cutting → Error Handling / Logging / Configuration / Coding Conventions 等）
+- **模板即最低标准** — 子结构不可留空，controller 不再自行判断"够不够详细"
+
+**子代理上下文注入重构：**
+- implementer prompt 从 **7 个必填字段扩展到 9 个**：新增 Domain Context + Reference Code
+- 新增 **Controller Checklist**（11 项），确保上下文字段不遗漏
+- spec-reviewer 和 code-quality-reviewer prompt 模板从简化版升级为完整版
+- 所有 prompt 模板改为**英文**（面向子代理的统一语言）
+
+**verify-change 集成 design doc：**
+- Step 1 artifact 表格从 2 个扩展到 **3 个**（tasks.md + design doc + specs）
+- D3 Coherence 重写为 4 层验证：Design Intent → Design Adherence → Architectural Consistency → Risk Mitigation
+- D4 Business Flow 新增 design doc 作为权威流程来源
+- Graceful Degradation 表格从 2 行扩展到 4 行
+
+**其他修复：**
+- root-cause-debugging Phase 3.5 → Phase 4 重编号完成
+- `using-superplus` "6-step" → "7-step" 修正
+- 全项目过时引用清理（proposal/plan 残留、数字错误）
+
 ### v0.2.2 — Quick-Change 技能 (2026-06-23)
 
 - **新增** `quick-change` 技能 — 4 步浓缩流程（Quick Spec → Implement → Verify → Finalize），用于加字段、改校验、修小 bug 等小型变更
 - **新增** `/sp-quick-change` 斜杠命令
 - **新增** `docs/specs/quick-change/spec.md` 主规格
-- **改进** 模板文件重命名加序号（`1.proposal.md` ~ `4.tasks.md`）
+- **改进** 模板文件重命名加序号（`1.delta-spec.md` + `2.tasks.md`）
 - **改进** `templates/` 迁移至 `skills/write-plan-tasks/templates/`
 - **改进** 产出物路径同步加序号
 - **文档** AGENTS.md / README.md / CLAUDE.md 同步

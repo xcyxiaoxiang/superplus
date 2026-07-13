@@ -45,13 +45,13 @@ Use for ANY technical issue:
 
 ---
 
-## The Five Phases
+## The Six Phases
 
 You MUST complete each phase before proceeding to the next.
 
 **Immediately invoke todowrite to track progress:**
 ```
-["Phase 1: Root Cause Investigation", "Phase 2: Pattern Analysis", "Phase 3: Hypothesis Testing", "Phase 4: Implementation", "Phase 5: Knowledge Capture"]
+["Phase 1: Root Cause Investigation", "Phase 2: Pattern Analysis", "Phase 3: Hypothesis Testing", "Phase 4: Fix Plan Review", "Phase 5: Implementation", "Phase 6: Knowledge Capture"]
 ```
 Update todo status as you complete each phase.
 
@@ -172,7 +172,45 @@ Update todo status as you complete each phase.
    - Ask for help
    - Research more
 
-### Phase 4: Implementation
+### Phase 4: Fix Plan Review
+
+**Before writing any fix code, present the plan to the user.**
+
+This is a lightweight gate — not a full design review, but a confirmation that you're about to fix the right thing in the right way.
+
+1. **Present Root Cause Summary**
+
+   Show the user what you found:
+   - **Root cause**: What is actually broken and why
+   - **Evidence**: Key findings that led to this conclusion
+   - **Fix approach**: What you plan to change
+   - **Impact scope**: Which files/modules/components are affected
+   - **Alternatives considered**: Other valid approaches and why you're not choosing them
+
+2. **When This Gate Is Mandatory**
+
+   | Condition | Gate Required |
+   |-----------|--------------|
+   | Fix involves **multiple files or modules** | ✅ Yes |
+   | **Multiple fix approaches** are viable | ✅ Yes |
+   | Fix may **affect existing functionality** | ✅ Yes |
+   | Fix touches **shared utilities or core interfaces** | ✅ Yes |
+   | Simple one-line fix in a single file | ⏩ Can skip — just fix it |
+   | Typo, null guard, obvious logic error | ⏩ Can skip — just fix it |
+
+   **When in doubt, present the plan.** A 30-second summary saves a 30-minute wrong fix.
+
+3. **User Response**
+
+   - **✅ Approved** — Proceed to Phase 5
+   - **🔄 Revise** — User wants a different approach → adjust plan, re-present
+   - **⏸️ Pause** — User needs more time or information → wait, do not proceed
+
+4. **If User Says "Just Fix It"**
+
+   If the user explicitly waives review, proceed — but still log what you're changing and why. The gate exists to protect against accidental damage, not to slow down deliberate speed.
+
+### Phase 5: Implementation
 
 **Fix the root cause, not the symptom:**
 
@@ -229,7 +267,7 @@ Update todo status as you complete each phase.
 
    This is NOT a failed hypothesis - this is a wrong architecture.
 
-### Phase 5: Knowledge Capture
+### Phase 6: Knowledge Capture
 
 **MUST ask the user before proceeding.** After the bug is fixed, present the following summary and ask whether to capture:
 
@@ -270,7 +308,7 @@ If you catch yourself thinking:
 
 **ALL of these mean: STOP. Return to Phase 1.**
 
-**If 3+ fixes failed:** Question the architecture (see Phase 4.6)
+**If 3+ fixes failed:** Question the architecture (see Phase 5.6)
 
 ## your human partner's Signals You're Doing It Wrong
 
@@ -304,8 +342,9 @@ If you catch yourself thinking:
 | **1. Root Cause** | Read errors, reproduce, check changes, visualize data flow, gather evidence | Understand WHAT and WHY |
 | **2. Pattern** | Find working examples, compare | Identify differences |
 | **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
-| **4. Implementation** | Create test, fix, 3D verify (3 passes), full suite | Bug resolved, all tests pass |
-| **5. Knowledge Capture** | Ask user, update specs/design/tasks/debug note if confirmed | Learning preserved |
+| **4. Fix Plan Review** | Present root cause + fix plan to user, confirm approach | User approved fix plan |
+| **5. Implementation** | Create test, fix, 3D verify (3 passes), full suite | Bug resolved, all tests pass |
+| **6. Knowledge Capture** | Ask user, update specs/design/tasks/debug note if confirmed | Learning preserved |
 
 ## When Process Reveals "No Root Cause"
 
@@ -323,11 +362,11 @@ If systematic investigation reveals issue is truly environmental, timing-depende
 These techniques are built into the debugging process above:
 
 - **Backward tracing** (Phase 1, Step 6) — Trace bugs backward through call stack to find original trigger
-- **Defense in depth** (Phase 4, Step 3) — Add validation at multiple layers after finding root cause
+- **Defense in depth** (Phase 5, Step 3) — Add validation at multiple layers after finding root cause
 - **Condition-based waiting** (Phase 2) — Replace arbitrary timeouts with condition polling for async operations
 
 **Related skills:**
-- **test-driven-development** - For creating failing test case (Phase 4, Step 1)
+- **test-driven-development** - For creating failing test case (Phase 5, Step 1)
 - **apply-change** / **verify-change** - Built-in verification discipline (evidence before claims)
 
 ## Real-World Impact

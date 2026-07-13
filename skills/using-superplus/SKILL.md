@@ -37,11 +37,11 @@ If AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow AGEN
 
 ## superPlus Workflow
 
-The six-step spec-driven development workflow. Start here when building new features:
+The 7-step spec-driven development workflow. Start here when building new features:
 
 ```
 exploring ──→ designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
-(explore)     (design)      (proposal + plan)   (TDD + execute)   (5D validate)     (merge specs)    (finalize)
+(explore)     (design)      (specs + tasks)     (TDD + execute)   (5D validate)     (merge specs)    (finalize)
 ```
 
 For issues outside the main flow (bugs, code review, etc.), see [When Multiple Skills Apply](#when-multiple-skills-apply).
@@ -113,7 +113,7 @@ The skill itself tells you which.
 
 ## When Multiple Skills Apply
 
-Use the **workflow sequence** as your guide. The 6-step flow is the primary path:
+Use the **workflow sequence** as your guide. The 7-step flow is the primary path:
 
 | Phase | Skill | Trigger |
 |-------|-------|---------|

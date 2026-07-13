@@ -1,13 +1,13 @@
 ---
 name: write-plan-tasks
-description: "Use after designing approves a design. Generates all planning artifacts (proposal, specs, plan, tasks) in one step. Merges OpenSpec one-shot artifact generation with detailed implementation plans."
+description: "Use after designing approves a design. Generates specs and tasks artifacts from approved design."
 ---
 
-# Write-Plan-Tasks — One-Shot Artifact Generation
+# Write-Plan-Tasks — Specs & Task Artifact Generation
 
-Take an approved design and generate all planning artifacts in one step: proposal, specs, design doc, and detailed task list.
+Take an approved design and generate all planning artifacts in one step: specs and detailed task list.
 
-**Announce at start:** "I'm using the write-plan-tasks skill to create the implementation plan and artifacts."
+**Announce at start:** "I'm using the write-plan-tasks skill to create the implementation specs and tasks."
 
 **Context:** This skill runs after `designing` user-approves the design. Reads the design doc from `docs/designs/YYYY-MM-DD-<topic>-design.md`.
 
@@ -16,7 +16,7 @@ Take an approved design and generate all planning artifacts in one step: proposa
 - Scope boundaries or non-goals the user explicitly stated
 - Codebase patterns or constraints discovered during exploration
 
-Cross-reference these with the design doc's Context section. If important insights are missing, incorporate them into the proposal and plan.md.
+Cross-reference these with the design doc's Context section. If important insights are missing, incorporate them into the tasks.md header sections.
 **Next step:** Invoke `apply-change` to implement the tasks.
 
 ---
@@ -45,11 +45,11 @@ digraph when_to_use {
 Generate artifacts in this dependency order:
 
 ```
-proposal.md ──→ specs/**/*.md ──→ plan.md ──→ tasks.md
-   (why)           (what)          (how)       (steps)
+1.specs/**/*.md ──→ 2.tasks.md
+   (what)            (how + steps)
 ```
 
-Each artifact depends on the previous ones. Always check existing specs at `docs/specs/` before creating delta specs.
+Each artifact depends on the previous one. Always check existing specs at `docs/specs/` before creating delta specs.
 
 ---
 
@@ -58,7 +58,7 @@ Each artifact depends on the previous ones. Always check existing specs at `docs
 ### Step 0: Setup Change Directory
 
 ```bash
-mkdir -p docs/changes/<name>/2.specs
+mkdir -p docs/changes/<name>/1.specs
 ```
 
 **Determine change name** from the design document topic:
@@ -76,26 +76,7 @@ mkdir -p docs/changes/<name>/2.specs
 ls docs/specs/ 2>/dev/null
 ```
 
-### Step 1: Create Proposal
-
-**Read the approved design doc** from `docs/designs/YYYY-MM-DD-<topic>-design.md`.
-
-Extract from the design doc and write `docs/changes/<name>/1.proposal.md` using the template at `templates/1.proposal.md`:
-
-| Design Doc Section | → Proposal Section |
-|-------------------|-------------------|
-| Problem / Goal | → **Why** |
-| Architecture + Approach | → **What Changes** |
-| Components | → **Capabilities** (New or Modified) |
-| Scope | → **Impact** |
-
-**Capabilities section is critical.** Each capability listed here will need a spec file:
-- **New Capabilities:** Each creates `specs/<capability>/spec.md`
-- **Modified Capabilities:** Each creates a delta spec in `specs/<capability>/spec.md`. Only include if spec-level behavior changes, not just implementation.
-
-Save to: `docs/changes/<name>/1.proposal.md`
-
-### Step 2: Create Specs
+### Step 1: Create Specs
 
 **Before writing any specs, identify all capabilities from the design doc.**
 
@@ -129,7 +110,7 @@ Extract capabilities from these sections of the approved design doc at `docs/des
 
 #### New Capabilities
 
-Create `docs/changes/<name>/2.specs/<capability>/spec.md` using `templates/2.delta-spec.md`:
+Create `docs/changes/<name>/1.specs/<capability>/spec.md` using `templates/1.delta-spec.md`:
 
 ```markdown
 ## ADDED Requirements
@@ -151,7 +132,7 @@ The system SHALL <behavior>.
 
 #### Modified Capabilities
 
-Read the existing spec at `docs/specs/<capability>/spec.md`. Create delta spec at `docs/changes/<name>/2.specs/<capability>/spec.md`:
+Read the existing spec at `docs/specs/<capability>/spec.md`. Create delta spec at `docs/changes/<name>/1.specs/<capability>/spec.md`:
 
 ```markdown
 ## MODIFIED Requirements
@@ -170,41 +151,71 @@ Read the existing spec at `docs/specs/<capability>/spec.md`. Create delta spec a
 - Every modified or added scenario must be testable.
 - If a requirement's behavior changes entirely, mark it as MODIFIED (not ADDED).
 
-### Step 3: Create Implementation Plan
+### Step 2: Create Tasks
 
-Write `docs/changes/<name>/3.plan.md` using the template at `templates/3.plan.md`. This is the **primary architectural reference** for implementer subagents in apply-change — they read this to understand how the system fits together and why decisions were made. (The task-specific instructions come from `tasks.md`; plan.md provides the context to make those instructions make sense.)
+Write `docs/changes/<name>/2.tasks.md` using the template at `templates/2.tasks.md`.
 
-**Boundary with tasks.md:** plan.md explains **why** the system is organized this way (architecture decisions, dependency reasoning, scope definitions). tasks.md contains **what exactly to do** (file paths, code snippets, commands, step-by-step instructions). If a subagent needs to understand a decision, read plan.md. If it needs to know which file to edit and what code to write, read tasks.md. When in conflict, tasks.md is the execution authority.
+The template has two parts: a **header** with planning context (9 sections) and the **task list** with granular task breakdown.
 
-Extract these from the approved design doc and write a complete, self-contained plan:
+#### Header Sections
 
-| Section | What to Extract | Why Plan.md Needs It |
-|---------|----------------|----------------------|
-| **Context** | 2-4 sentence summary: what's being built, why, current state, constraints | Grounds subagent in the problem space |
-| **Architecture** | High-level architecture: components, connections, data flow, key abstractions | Gives subagent a mental model of the system |
-| **Decisions** | Key technical decisions with full rationale (not just what, but why) | Subagents need the reasoning to handle ambiguous edge cases |
-| **Files** | List of files to create/modify, grouped by component, with exact paths | Tells subagent where to work |
-| **Implementation Order** | Which components to build first, with dependency reasoning | Prevents dependency deadlocks in task execution |
-| **Cross-Cutting** | Error handling, logging, security, config patterns | Ensures consistent implementation across all tasks |
-| **Testing Strategy** | Unit vs integration split, mocking approach, test fixtures | Aligns test writing across independent subagents |
+The template has two parts: a **header** with planning context (9 sections) and the **task list** with granular task breakdown.
 
-**Write each section with enough detail for a subagent to work independently.** The plan.md is the implementer's primary reference. For most tasks it should be sufficient on its own. For deep context, include a `## Reference` section with a link back to the original design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md`.
+**Capabilities** — List of new and modified capabilities (extracted during Step 1). This is the index that maps specs to tasks.
 
-**Architecture section guidance:** Don't just list components. Describe how they connect, data flow direction, key interfaces. If there's a diagram in the design doc, describe it in prose. **Include key type/interface signatures** where they affect component boundaries — for example, whether `S3Service.putObject()` takes a `Buffer` or `Stream` is an architecture-level decision that subagents must know.
+**Context** — Problem background and constraints. Four sub-sections:
+- *Change Background*: 1-2 sentences on what problem we're solving and why.
+- *Current State*: 1-2 sentences on what exists now and what's missing.
+- *Constraints*: 1-2 sentences on technical/business constraints and scope boundaries.
+- *References*: Links to design doc and specs. Include base package.
 
-**Decisions section guidance:** Include reasoning, not just outcomes. "Use Redis (because data must survive process restarts and we already have Redis in the stack)" is better than "Use Redis." If alternatives were considered, note why they were rejected — this prevents subagents from re-litigating closed decisions.
+**Domain Context** — Business domain background that subagents need to understand the WHY behind the WHAT. Three sub-sections:
+- *Key Concepts*: Define domain terms, acronyms, and business entities. Subagents must understand what things MEAN, not just their names. Include format constraints and data sources.
+- *Business Flow Position*: Where this change sits in the larger business pipeline. Use an ASCII diagram or step list. Subagents need to know "I am step N of M" to avoid breaking upstream/downstream assumptions.
+- *Data Semantics*: Key data entities, their relationships, and field-level semantics. This prevents subagents from misinterpreting field purposes or breaking implicit contracts.
 
-**Implementation Order guidance:**
-- Start with independent leaf components (no internal dependencies)
-- End with integration/glue code that wires components together
-- If testing strategy differs by component, note it per-file group
-- **For each entry, define scope**: what this step covers and what it explicitly leaves for later steps. This prevents subagents from over-building or under-building.
+**Architecture** — High-level architecture description: components, connections, data flow, key interfaces. Include key type/interface signatures where they affect component boundaries. Two sub-sections:
+- *Component Responsibilities*: Brief (1-2 sentences) description of what EACH component does. Prevents subagents from putting logic in the wrong component.
+- *Key Interfaces*: Precise interface/method signatures at component boundaries, with parameter types, return types, and semantic meaning.
+If there's a diagram in the design doc, reproduce or adapt it here.
 
-**No line limit.** The previous 40-line constraint (from the older design quick-reference format) is removed. Provide the detail implementers need.
+**Reference Code** — Concrete code snippets extracted from the existing codebase that subagents should mimic. DO NOT describe patterns in prose — show the actual code. Each snippet should be labeled with the pattern it demonstrates (e.g., "ServiceImpl Error Handling Pattern", "DTO Assembly Pattern"). Extract real code from the project that matches the Cross-Cutting Concerns rules. This bridges the gap between "what the rule says" and "what the code actually looks like" in this project.
 
-### Step 4: Create Tasks
+**Implementation Order** — Component-level sequence with dependency reasoning. Mark components that can be implemented in parallel. Use the table format from the template.
 
-Write `docs/changes/<name>/4.tasks.md` — this is the **detailed implementation plan** with granular task breakdown.
+**Cross-Cutting Concerns** — Error handling, logging, security, config patterns, coding conventions that apply across all tasks. Each sub-section (Error Handling, Logging, Configuration, Coding Conventions) must contain enough detail for a subagent to follow without guessing. When possible, reference the Reference Code section for concrete examples.
+
+**Configuration** — Environment variables, feature flags, external service URLs, and other shared configuration. Include name, type, default value, and required/optional status. If few items, merge into Cross-Cutting Concerns instead.
+
+**Testing Strategy** — Test approach, framework, run commands, and mocking strategy. Per-component differences if applicable. Three sub-sections:
+- *Test Framework & Commands*: Framework name, exact run command, coverage tool.
+- *Mocking Strategy*: What to mock vs what not to mock, fixture location.
+- *Per-Component Notes*: Component-specific testing considerations.
+
+**Reference** — Link back to the original design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md`.
+
+#### Header guidance
+
+The template defines sub-structure for each section — **fill every sub-section, do not leave them empty**. The sub-structure IS the minimum fill standard. Subagents need concrete, specific context — vague descriptions like "follow best practices" or "use standard patterns" are not useful.
+
+Key principles:
+- **Show, don't tell:** Reference Code section uses real code, not prose descriptions of patterns
+- **Semantic precision:** Key Concepts must explain what terms MEAN in this domain, not just define them technically
+- **Flow awareness:** Business Flow Position must show where the change sits in the larger pipeline
+- **Interface precision:** Key Interfaces must include types + semantic meaning, not just method names
+- **Context completeness:** Every Cross-Cutting sub-section must contain enough for a subagent to follow without external research
+
+#### Task List
+
+**Before defining tasks, map out file structure:**
+
+```
+docs/changes/<name>/
+├── 1.specs/<domain>/spec.md
+└── 2.tasks.md            ← you are here
+```
+
+List which files will be created or modified and what each is responsible for. This decomposition feeds into the task breakdown.
 
 **Each task is one action (2-5 minutes):**
 - "Write the failing test" — task
@@ -213,22 +224,10 @@ Write `docs/changes/<name>/4.tasks.md` — this is the **detailed implementation
 - "Run tests to verify" — task
 - "Commit" — task
 
-**Before defining tasks, map out file structure:**
-
-```
-docs/changes/<name>/
-├── 1.proposal.md
-├── 2.specs/<domain>/spec.md
-├── 3.plan.md
-└── 4.tasks.md            ← you are here
-```
-
-List which files will be created or modified and what each is responsible for. This decomposition feeds into the task breakdown.
-
-**Task format using template at `templates/4.tasks.md`:**
+**Task format using template at `templates/2.tasks.md`:**
 
 ```markdown
-## 1. <Component Name>
+### 1. <Component Name>
 
 **Files:**
 - Create: `src/path/to/file.ts`
@@ -261,8 +260,6 @@ export function functionUnderTest(input: Type): ReturnType {
 
 Run: `npm test -- tests/path/test.ts`
 Expected: PASS
-
-
 ```
 
 **No placeholders.** Every step must contain actual content:
@@ -272,7 +269,7 @@ Expected: PASS
 - ❌ "Similar to Task N" (repeat it)
 - ✅ Complete code, exact file paths, exact commands
 
-### Step 5: Artifact Self-Review & Independent Review
+### Step 3: Artifact Self-Review & Independent Review
 
 After writing all artifacts, run two phases of review: a quick self-check for surface issues, then an independent subagent review against the original design doc.
 
@@ -300,7 +297,7 @@ Fix any issues inline. These are mechanical — no re-review needed.
 
 #### Phase 2: Independent Artifact Review (Deep)
 
-Dispatch a reviewer subagent with the original design doc and all four artifacts.
+Dispatch a reviewer subagent with the original design doc and both artifacts.
 
 **Dispatch template:**
 
@@ -317,15 +314,12 @@ architecture soundness against the original design doc.
 
 | Artifact | Path |
 |----------|------|
-| Proposal | `docs/changes/<name>/1.proposal.md` |
-| Specs | `docs/changes/<name>/2.specs/**/*.md` |
-| Plan | `docs/changes/<name>/3.plan.md` |
-| Tasks | `docs/changes/<name>/4.tasks.md` |
+| Specs | `docs/changes/<name>/1.specs/**/*.md` |
+| Tasks | `docs/changes/<name>/2.tasks.md` |
 
 ## What to Check
 
 **Design Coverage:**
-- Does the proposal capture the full scope, problem, and approach from the design doc?
 - Are any capabilities from the design doc missing from the artifacts?
 - Are any scope boundaries (explicit non-goals) being violated?
 
@@ -335,8 +329,8 @@ architecture soundness against the original design doc.
 - Are edge cases and error conditions covered in the specs?
 
 **Design Faithfulness:**
-- Does `plan.md` accurately reflect the architecture, key decisions, and file structure from the design doc?
-- Is any important architectural context lost in the extraction from design doc to plan?
+- Does tasks.md accurately reflect the architecture, decisions, and constraints from the design doc?
+- Is any important architectural context lost in the extraction from design doc to tasks?
 - Are file paths, component names, and data flows consistent with the design?
 
 **Task Decomposition:**
@@ -358,7 +352,7 @@ When done, report:
 
 | Severity | Category | Location | Description |
 |----------|----------|----------|-------------|
-| CRITICAL | Design coverage | proposal.md | Missing capability: <name> |
+| CRITICAL | Design coverage | tasks.md | Missing capability: <name> |
 | WARNING | Spec completeness | specs/auth/spec.md | No error scenario for token expiry |
 | SUGGESTION | Task decomposition | tasks.md:5.3 | Task could be split: <reason> |
 
@@ -376,7 +370,7 @@ When done, report:
 
 **Do NOT skip this phase.** The subagent brings a fresh perspective uncorrupted by artifact creation — it catches things the creator cannot see.
 
-### Step 6: Handoff
+### Step 4: Handoff
 
 **Designate a `change_id` for use by downstream skills.** The change name is the directory name under `docs/changes/`.
 
@@ -392,10 +386,8 @@ Announce: "All artifacts created at `docs/changes/<name>/`. Ready for implementa
 |-------|-------------------|
 | `designing` | **Required previous step** — provides approved design |
 | `apply-change` | **Required next step** — implements tasks |
-| `templates/1.proposal.md` | Proposal template |
-| `templates/2.delta-spec.md` | Spec template |
-| `templates/3.plan.md` | Implementation plan template |
-| `templates/4.tasks.md` | Tasks template |
+| `templates/1.delta-spec.md` | Spec template |
+| `templates/2.tasks.md` | Tasks template |
 
 ---
 
@@ -405,9 +397,9 @@ Announce: "All artifacts created at `docs/changes/<name>/`. Ready for implementa
 - Leave placeholders (TBD, TODO) in any artifact
 - Create tasks without exact file paths and code
 - Include implementation details in specs (specs = what, not how)
-- Modify main specs directly (always use delta specs in `docs/changes/<name>/2.specs/`)
-- Skip creating any artifact (all four are required)
-- Skip the independent artifact review (Phase 2 in Step 5) — it catches what the creator is blind to
+- Modify main specs directly (always use delta specs in `docs/changes/<name>/1.specs/`)
+- Skip creating any artifact (both are required)
+- Skip the independent artifact review (Phase 2 in Step 3) — it catches what the creator is blind to
 - Skip fixing CRITICAL issues found in Phase 2 (must fix, then re-review)
 - Combine Phase 2 review into your own self-review (defeats the purpose of fresh context)
 - Reference files or types not defined in any task

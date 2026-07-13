@@ -153,15 +153,17 @@ After all sections are presented and approved, confirm overall design approval. 
 
 Save validated design to `docs/designs/YYYY-MM-DD-<topic>-design.md`.
 
-The design doc should cover:
+Use the template at `skills/designing/templates/design-document.md` as a starting point. The template defines 7 required sections (1-7) and 3 optional sections (8-10) for complex projects. Sections can be trimmed to a few sentences for simple projects, but all 7 required sections must be present.
 
-- **Context** — Exploration summary (if from exploring), current state, constraints
-- **Problem / Goal** — What are we solving?
-- **Approach** — Chosen approach with rationale (covering architecture and components)
-- **Data Flow** — How data moves through the system
-- **Key Decisions** — Important technical choices with rationale
-- **Scope** — What's in scope and what's explicitly out
-- **Risks / Trade-offs** — Known risks, trade-offs, and mitigations
+Required sections:
+
+- **1. 上下文 (Context)** — Exploration summary (if from exploring), current state, constraints
+- **2. 问题 / 目标 (Problem / Goal)** — What are we solving?
+- **3. 方案选择 (Approach)** — Chosen approach with rationale, comparison table of 2-3 options
+- **4. 架构与组件设计 (Data Flow)** — How data moves through the system, component design, interface definitions
+- **5. 关键技术决策 (Key Decisions)** — Important technical choices with rationale
+- **6. 范围 (Scope)** — What's in scope and what's explicitly out
+- **7. 风险与缓解 (Risks / Trade-offs)** — Known risks, trade-offs, and mitigations
 
 The design doc feeds into `write-plan-tasks` downstream. See [Integration](#integration) for section-to-artifact mapping.
 
@@ -223,7 +225,7 @@ Invoke the `write-plan-tasks` skill to create detailed planning artifacts.
 | Skill | Integration Point |
 |-------|-------------------|
 | `exploring` | **Optional previous step** — provides exploration context for Entry A |
-| `write-plan-tasks` | **Required next step** — generates proposal, specs, plan, and tasks |
+| `write-plan-tasks` | **Required next step** — generates specs and tasks |
 | `using-superplus` | Bootstrap — loaded before this skill |
 
 ### Design Doc → Downstream Mapping
@@ -231,14 +233,14 @@ Invoke the `write-plan-tasks` skill to create detailed planning artifacts.
 The design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md` is consumed by `write-plan-tasks`:
 
 | Design Doc Section | → write-plan-tasks Output |
-|---|---|
-| **Context** | Change-level `plan.md` context section |
-| **Problem / Goal** | Proposal's **Why** |
-| **Approach** (architecture + components) | Proposal's **What Changes** and **Capabilities** |
+|---|---|---|
+| **Context** | `tasks.md` → **Context** header section |
+| **Problem / Goal** | Specs → requirements rationale |
+| **Architecture** | Identifies major components → capabilities; `tasks.md` → **Architecture** header section |
 | **Data Flow** | Identifies data processing boundaries → capabilities |
-| **Key Decisions** | Identifies behavior changes → modified capabilities |
-| **Scope** | Proposal's **Impact** |
-| **Risks / Trade-offs** | Change-level `plan.md` Key Decisions section |
+| **Key Decisions** | Identifies behavior changes → modified capabilities; `tasks.md` → **Cross-Cutting** header |
+| **Scope** | Specs → scope boundaries |
+| **Risks / Trade-offs** | `tasks.md` → **Cross-Cutting** header section |
 
 The topic in the filename determines the change name:
 `docs/designs/2026-05-20-add-dark-mode-design.md` → `docs/changes/add-dark-mode/`

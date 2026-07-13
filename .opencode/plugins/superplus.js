@@ -111,7 +111,7 @@ ${toolMapping}
       const SKILLS = [
         { name: 'exploring',           desc: 'Free-form problem exploration and requirement clarification' },
         { name: 'designing',           desc: 'Structured design documentation' },
-        { name: 'write-plan-tasks',    desc: 'Generate proposal, specs, plan, and tasks from design' },
+        { name: 'write-plan-tasks',    desc: 'Generate specs and tasks from design' },
         { name: 'apply-change',        desc: 'TDD implementation with parallel subagents' },
         { name: 'verify-change',       desc: '5D verification against change specs' },
         { name: 'sync-specs',          desc: 'Merge delta specs into main spec library' },

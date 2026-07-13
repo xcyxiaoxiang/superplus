@@ -43,10 +43,11 @@ Read available artifacts from `docs/changes/<name>/`:
 
 | Artifact | Path | Required? |
 |----------|------|-----------|
-| tasks.md | `docs/changes/<name>/4.tasks.md` | Required |
-| specs/**/*.md | `docs/changes/<name>/2.specs/**/*.md` | Optional |
-| plan.md | `docs/changes/<name>/3.plan.md` | Optional |
-| proposal.md | `docs/changes/<name>/1.proposal.md` | Optional |
+| tasks.md | `docs/changes/<name>/2.tasks.md` | Required |
+| design doc | `docs/designs/YYYY-MM-DD-<topic>-design.md` | Required |
+| specs/**/*.md | `docs/changes/<name>/1.specs/**/*.md` | Optional |
+
+The design doc is the **authoritative design intent** — it's what was approved before implementation. tasks.md is the execution plan derived from it. Actual code is the implementation. D3 Coherence verifies all three align.
 
 Note what's missing for graceful degradation (Step 8).
 
@@ -134,15 +135,26 @@ Create a verification report with three dimensions, each scoring CRITICAL / WARN
 
 #### Dimension 3: Coherence
 
-**Design Adherence (if plan.md exists):**
-- Extract key decisions (`## Key Decisions` section) and architecture (`## Architecture` section)
-- For each decision and architecture element, verify implementation follows it:
-  - Read implementation code against each decision
-  - Cross-check the architecture described in plan.md against the actual code structure
-  - Check if architectural choices match the plan
+**Purpose:** Verify that the implementation, execution plan (tasks.md), and original design intent (design doc) are aligned. This is a three-way check — not just "does code match the plan" but "does the plan still match what was designed".
+
+**Design Intent Verification (design doc vs tasks.md):**
+
+Before checking code, verify the execution plan is faithful to the design:
+- Read the design doc's Approach section (§3): Was the selected approach correctly translated into tasks.md Architecture?
+- Read the design doc's Key Decisions section (§5): Does each decision appear in tasks.md or is it reflected in the implementation?
+- Read the design doc's Scope section (§6): Does the task list stay within scope? Any scope creep (tasks not in design) or scope gaps (design items not tasked)?
+- **WARNING:** Design decision not reflected in tasks → `"Design decision '<decision>' not captured in execution plan"`
+- **WARNING:** Scope creep detected → `"Task N implements '<X>' which is outside design scope"`
+
+**Design Adherence (design doc + tasks.md vs actual code):**
+- Extract architecture description from the design doc (§4) — this is the authoritative architecture, not the tasks.md copy
+- For each design element (component, interface, data flow), verify implementation follows it:
+  - Read implementation code against each design element
+  - Cross-check the architecture described in the design doc against the actual code structure
+  - Check if architectural choices match the design
   - Note where implementation deviates and whether the deviation is justified
-- **WARNING:** Contradiction → `"Design decision not followed: <decision>"`
-- **Recommendation:** "Update implementation or update plan.md to match reality"
+- **CRITICAL:** Architecture contradiction → `"Design architecture not followed: <element>"`
+- **WARNING:** Unjustified deviation → `"Implementation deviates from design: <details>"`
 
 **Architectural Consistency:**
 - Review new/modified files for:
@@ -151,7 +163,10 @@ Create a verification report with three dimensions, each scoring CRITICAL / WARN
   - Error handling strategy consistent across the change
   - Dependency direction follows project architecture
 - **SUGGESTION:** Deviation → `"Architectural inconsistency: <details>"`
-- **Recommendation:** Specific pattern with example from existing code
+
+**Risk Mitigation Verification:**
+- Read the design doc's Risks section (§7): For each identified risk, check whether the implementation includes the planned mitigation
+- **WARNING:** Risk without mitigation → `"Design risk '<risk>' has no corresponding mitigation in implementation"`
 
 **Note:** Do NOT check for:
 - Naming conventions (handled by linter/formatter)
@@ -164,7 +179,9 @@ Focus on **architectural-level** coherence only.
 **Purpose:** Verify that business logic flows correctly from start to finish, with no dead ends, missing transitions, or broken paths. This goes beyond "is the code there" to "does the business process work."
 
 **Extract Business Flows:**
-- Read specs, plan.md, and tasks.md for:
+- **Primary source: design doc §4 (Architecture & Data Flow).** This is the authoritative definition of business flows — the approved flows with ASCII diagrams, component interactions, and data flow direction. Use this as the baseline.
+- **Secondary source: specs and tasks.md.** Extract additional flows, state machines, business rules, and scenarios not covered by the design doc.
+- Extract from all sources:
   - State machines (e.g., draft → submitted → approved → rejected)
   - Process flows (e.g., order → payment → fulfillment → delivery)
   - Step sequences (e.g., validate → transform → persist → notify)
@@ -318,7 +335,7 @@ Run these between the two global passes, each with a single lens:
 Pass 1 (Full 5D) → Pass A (Completeness) → Pass B (Correctness) → Pass C (Coherence) → Pass D (Business Flow) → Pass E (Field Consistency) → Fix issues → Pass 2 (Full 5D Regression)
 ```
 
-**Minimum requirement:** All 7 passes must complete before declaring "all clear" — **but only when artifacts are sufficient.** When artifacts are limited, Graceful Degradation (Step 8) takes precedence: check only what the available artifacts support. The 7-pass requirement is conditional on having all artifacts (tasks.md + specs + plan.md).
+**Minimum requirement:** All 7 passes must complete before declaring "all clear" — **but only when artifacts are sufficient.** When artifacts are limited, Graceful Degradation (Step 8) takes precedence: check only what the available artifacts support. The 7-pass requirement is conditional on having all artifacts (tasks.md + specs).
 
 ---
 
@@ -419,9 +436,9 @@ Run the most complete check possible with available artifacts:
 | Available Artifacts | Check Dimensions | Output |
 |-------------------|-----------------|--------|
 | Only tasks.md | Completeness only | Task completion report |
-| tasks.md + specs | Completeness + Correctness | Full spec validation |
-| tasks.md + specs + plan | Completeness + Correctness + Coherence + Business Flow | Flow + field validation |
-| All artifacts | All 5 dimensions | Full 5D report |
+| tasks.md + design doc | Completeness + Coherence (limited — no spec-based correctness/business flow/field checks) | 2D report |
+| tasks.md + specs | All 5 dimensions (Coherence limited — no design intent baseline) | 5D report |
+| tasks.md + design doc + specs | All 5 dimensions | Full 5D report |
 
 **Always note which checks were skipped and why.**
 

@@ -6,7 +6,7 @@ superPlus is a **spec-driven development workflow** that merges OpenSpec's artif
 
 ```
 exploring → designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
-(explore) (design)      (proposal + plan)   (TDD + execute)   (5D validate)     (merge specs)    (finalize)
+(explore) (design)      (specs + tasks)     (TDD + execute)   (5D validate)     (merge specs)    (finalize)
                                                                      │
                                                                      ▼
                                                             root-cause-debugging
@@ -25,7 +25,7 @@ quick-change ──→ 4-step condensed flow (Quick Spec → Implement → Verif
 |-------|------|-------|--------|
 | `exploring` | Requirements unclear | Problem statement | Exploration summary (in conversation) |
 | `designing` | Design is needed | Exploration summary / clear requirements | `docs/designs/YYYY-MM-DD-<topic>-design.md` |
-| `write-plan-tasks` | Design approved | Design doc | `docs/changes/<name>/{1.proposal,2.specs,3.plan,4.tasks}.md` |
+| `write-plan-tasks` | Design approved | Design doc | `docs/changes/<name>/{1.specs,2.tasks}.md` |
 | `apply-change` | Tasks ready | `tasks.md` | Implemented code (TDD, all tests passing) |
 | `verify-change` | Implementation done | Change directory | 5D verification report + issues triage (CRITICAL → `root-cause-debugging` fix loop) |
 | `sync-specs` | Verify passed | Delta specs | Updated `docs/specs/<capability>/spec.md` |
@@ -59,34 +59,16 @@ superPlus/
 ├── CLAUDE.md            # Claude Code quick guide
 └── LICENSE              # MIT license
 ```
-superPlus/
-├── skills/              # All superPlus skills
-│   ├── exploring/
-│   ├── designing/
-│   ├── write-plan-tasks/
-│   │   └── templates/   # Artifact templates
-│   ├── apply-change/
-│   ├── verify-change/
-│   ├── sync-specs/
-│   ├── archive-change/
-│   ├── quick-change/
-├── docs/changes/             # Active change directories
-│   └── archive/         # Archived changes
-├── docs/
-│   ├── designs/         # Design documents
-│   └── specs/           # Main spec library
-└── AGENTS.md
-```
 
 ## Conventions
 
 - **Change naming**: kebab-case, starts with verb (add/fix/update/remove/optimize)
 - **Design docs**: `docs/designs/YYYY-MM-DD-<topic>-design.md`
 - **Main specs**: `docs/specs/<capability>/spec.md`
-- **Change artifacts**: `docs/changes/<name>/{1.proposal,2.specs/*,3.plan,4.tasks}.md`
+- **Change artifacts**: `docs/changes/<name>/{1.specs/*,2.tasks}.md`
 - **Archives**: `docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**: Always write failing test first, then implement, then verify
-- **All artifacts required**: proposal + specs + plan + tasks for every change
+- **All artifacts required**: specs + tasks for every change
 
 ## Installation
 

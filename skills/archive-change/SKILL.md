@@ -54,7 +54,7 @@ If already archived, skip with message.
 **Artifact check:** List what artifacts exist in the change directory.
 
 **Task completion (if tasks.md exists):**
-Read `docs/changes/<name>/4.tasks.md`. Count:
+Read `docs/changes/<name>/2.tasks.md`. Count:
 - `- [x]` — complete
 - `- [ ] ` — incomplete (note: trailing space to avoid matching `- [x]`)
 
@@ -66,7 +66,7 @@ Read `docs/changes/<name>/4.tasks.md`. Count:
 
 ### Step 3: Assess Delta Spec Sync State
 
-Check if delta specs exist at `docs/changes/<name>/2.specs/`.
+Check if delta specs exist at `docs/changes/<name>/1.specs/`.
 
 **If delta specs exist:**
 - Read each delta spec

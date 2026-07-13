@@ -37,10 +37,10 @@ digraph when_to_use {
 ### Step 1: Discover Delta Specs
 
 ```bash
-ls docs/changes/<name>/2.specs/**/*.md 2>/dev/null
+ls docs/changes/<name>/1.specs/**/*.md 2>/dev/null
 ```
 
-Each delta spec maps to a capability: `docs/changes/<name>/2.specs/<capability>/spec.md`
+Each delta spec maps to a capability: `docs/changes/<name>/1.specs/<capability>/spec.md`
 
 Main specs live at: `docs/specs/<capability>/spec.md`
 
@@ -125,7 +125,7 @@ The system SHALL do something new.
 If a capability doesn't have a main spec yet:
 
 1. Create `docs/specs/<capability>/spec.md`
-2. Add a `## Purpose` section — extract from delta spec context, proposal.md, or plan.md. Do NOT use "TBD"
+2. Add a `## Purpose` section — extract from delta spec context or tasks.md header. Do NOT use "TBD"
 3. Add a `## Requirements` section with the ADDED requirements
 
 ### Step 4: Conflict Detection

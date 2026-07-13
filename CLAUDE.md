@@ -6,7 +6,7 @@ superPlus is a **spec-driven development workflow** that guides Claude Code thro
 
 ```
 exploring ──→ designing ──→ write-plan-tasks ──→ apply-change ──→ verify-change ──→ sync-specs ──→ archive-change
-(explore)     (design)      (proposal + plan)   (TDD + execute)   (5D validate)     (merge specs)    (finalize)
+(explore)     (design)      (specs + tasks)     (TDD + execute)   (5D validate)     (merge specs)    (finalize)
                                                                           │
                                                                           ▼
                                                                  root-cause-debugging
@@ -33,7 +33,7 @@ This loads the skill discipline rules and shows all available skills. Then follo
 
 1. **`Skill exploring`** — explore the problem space (if requirements unclear)
 2. **`Skill designing`** — structure the design and produce design doc
-3. **`Skill write-plan-tasks`** — generate proposal, specs, plan, and tasks
+3. **`Skill write-plan-tasks`** — generate specs and tasks
 4. **`Skill apply-change`** — implement with TDD and subagent-driven development
 5. **`Skill verify-change`** — 5D verification
    - **If CRITICAL issues found** → `Skill root-cause-debugging` → re-run verify-change
@@ -46,7 +46,7 @@ This loads the skill discipline rules and shows all available skills. Then follo
 |-------|---------|--------|
 | `exploring` | Unclear requirements, need to investigate | Exploration summary (in conversation) |
 | `designing` | Design is needed | Design doc (`docs/designs/`) |
-| `write-plan-tasks` | Design approved | Full artifacts: proposal + specs + plan + tasks (`docs/changes/<name>/`) |
+| `write-plan-tasks` | Design approved | Full artifacts: specs + tasks (`docs/changes/<name>/`) |
 | `apply-change` | Tasks ready | Subagent-driven TDD implementation, tests passing |
 | `verify-change` | Implementation done | 5D verification report + issues triage (CRITICAL → `root-cause-debugging` fix loop) |
 | `sync-specs` | Verify passed | Updated main specs (`docs/specs/`) |
@@ -87,10 +87,10 @@ superPlus/
 - **Change naming**: kebab-case, starts with verb (add/fix/update/remove/optimize)
 - **Design docs**: `docs/designs/YYYY-MM-DD-<topic>-design.md`
 - **Main specs**: `docs/specs/<capability>/spec.md`
-- **Change artifacts**: `docs/changes/<name>/{1.proposal,2.specs/*,3.plan,4.tasks}.md`
+- **Change artifacts**: `docs/changes/<name>/{1.specs/*,2.tasks}.md`
 - **Archives**: `docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**: Always write failing test first, then implement, then verify
-- **All artifacts required**: proposal + specs + plan + tasks for every change
+- **All artifacts required**: specs + tasks for every change
 
 ## Tool Mapping for Claude Code
 
