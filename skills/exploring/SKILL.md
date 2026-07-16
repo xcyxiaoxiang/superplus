@@ -83,10 +83,9 @@ You have full context of the superPlus workflow. Use it naturally, don't force i
 At the start, quickly check what exists:
 
 ```
-1. Check docs/designs/     → existing designs, avoid duplication
-2. Check docs/specs/       → existing specs, align with conventions
-3. Check docs/changes/          → active changes, understand current work
-4. Check docs/changes/archive/  → historical context, learn from past decisions
+1. Check docs/changes/          → existing designs + active changes, understand current work
+2. Check docs/specs/            → existing specs, align with conventions
+3. Check docs/changes/archive/  → historical context, learn from past decisions
 ```
 
 If the user mentions an active change, read its artifacts from `docs/changes/<name>/` for context.

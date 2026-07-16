@@ -87,7 +87,7 @@ Task tool (general-purpose):
     ### 8. Design Reference
     [Controller: Paste design doc path link. If the subagent hits uncertainty, it can read the design doc for decision context.
 
-     Design doc: docs/designs/YYYY-MM-DD-<topic>-design.md
+     Design doc: docs/changes/<name>/design.md
      Specs: docs/changes/<name>/1.specs/
      Tasks: docs/changes/<name>/2.tasks.md
     ]

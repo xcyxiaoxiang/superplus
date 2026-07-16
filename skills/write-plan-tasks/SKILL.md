@@ -9,7 +9,7 @@ Take an approved design and generate all planning artifacts in one step: specs a
 
 **Announce at start:** "I'm using the write-plan-tasks skill to create the implementation specs and tasks."
 
-**Context:** This skill runs after `designing` user-approves the design. Reads the design doc from `docs/designs/YYYY-MM-DD-<topic>-design.md`.
+**Context:** This skill runs after `designing` user-approves the design. Reads the design doc from `docs/changes/<topic>/design.md`.
 
 **Context continuity:** If the design came from an `exploring` phase, the conversation context may contain insights not fully captured in the design doc. Before generating artifacts, quickly scan the exploring discussion for:
 - Key decisions made during exploration that aren't in the design doc
@@ -55,20 +55,21 @@ Each artifact depends on the previous one. Always check existing specs at `docs/
 
 ## The Process
 
-### Step 0: Setup Change Directory
+### Step 0: Locate Change Directory
+
+The change directory already exists (created by `designing` with the topic name). Locate it:
 
 ```bash
-mkdir -p docs/changes/<name>/1.specs
+ls docs/changes/<topic>/design.md
 ```
 
-**Determine change name** from the design document topic:
+The directory `docs/changes/<topic>/` already contains `design.md`. Your task is to add `1.specs/` and `2.tasks.md` alongside it:
 
-| Design Doc Topic | → Change Name |
-|-----------------|---------------|
-| "Add dark mode" | `add-dark-mode` |
-| "Fix login redirect bug" | `fix-login-redirect` |
+```bash
+mkdir -p docs/changes/<topic>/1.specs
+```
 
-**Naming rules:** kebab-case, start with verb (add/fix/update/remove/optimize), keep under 50 characters, check `docs/changes/` for existing names to avoid duplicates.
+**Change name:** The directory name (`<topic>`) is the change name. Use kebab-case, keep under 50 characters.
 
 **Check for existing specs** that this change will modify:
 
@@ -80,7 +81,7 @@ ls docs/specs/ 2>/dev/null
 
 **Before writing any specs, identify all capabilities from the design doc.**
 
-Extract capabilities from these sections of the approved design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md`:
+Extract capabilities from these sections of the approved design doc at `docs/changes/<topic>/design.md`:
 
 | Design Doc Section | How to Extract Capabilities |
 |--------------------|-----------------------------|
@@ -192,7 +193,7 @@ If there's a diagram in the design doc, reproduce or adapt it here.
 - *Mocking Strategy*: What to mock vs what not to mock, fixture location.
 - *Per-Component Notes*: Component-specific testing considerations.
 
-**Reference** — Link back to the original design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md`.
+**Reference** — Link back to the original design doc at `docs/changes/<topic>/design.md`.
 
 #### Header guidance
 
@@ -308,7 +309,7 @@ architecture soundness against the original design doc.
 
 ## Original Design Doc
 
-<Paste full text of `docs/designs/YYYY-MM-DD-<topic>-design.md`>
+<Paste full text of `docs/changes/<topic>/design.md`>
 
 ## Artifact Paths
 

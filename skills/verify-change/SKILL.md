@@ -44,7 +44,7 @@ Read available artifacts from `docs/changes/<name>/`:
 | Artifact | Path | Required? |
 |----------|------|-----------|
 | tasks.md | `docs/changes/<name>/2.tasks.md` | Required |
-| design doc | `docs/designs/YYYY-MM-DD-<topic>-design.md` | Required |
+| design doc | `docs/changes/<name>/design.md` | Required |
 | specs/**/*.md | `docs/changes/<name>/1.specs/**/*.md` | Optional |
 
 The design doc is the **authoritative design intent** — it's what was approved before implementation. tasks.md is the execution plan derived from it. Actual code is the implementation. D3 Coherence verifies all three align.

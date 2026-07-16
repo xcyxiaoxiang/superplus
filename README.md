@@ -30,7 +30,7 @@ quick-change ──→ 4 步浓缩流程（Quick Spec → Implement → Verify �
 | 技能 | 触发时机 | 核心产出 |
 |------|----------|---------|
 | `exploring` | 需求不明确 | 探索摘要（对话中），为设计铺路 |
-| `designing` | 需求明确或探索完成 | 设计文档 (`docs/designs/`)，含架构、决策、范围 |
+| `designing` | 需求明确或探索完成 | 设计文档 (`docs/changes/<topic>/design.md`)，含架构、决策、范围 |
 | `write-plan-tasks` | 设计获批 | 全套制品：specs + tasks (`docs/changes/<name>/`) |
 | `apply-change` | 任务就绪 | 子代理并行 TDD 实现 + 两阶段审查，测试通过 |
 | `verify-change` | 实现完成 | 5D 验证报告 + Issues Triage（发现问题自动接入 `root-cause-debugging` 修复回路） |
@@ -132,7 +132,7 @@ superPlus 提供两条路径，按变更规模自动选择：
 
 ```
    ┌──────────┐
-   │ 设计文档  │  docs/designs/YYYY-MM-DD-<topic>-design.md
+   │ 设计文档  │  docs/changes/<topic>/design.md
    └────┬─────┘
         │ write-plan-tasks
         ▼
@@ -193,7 +193,7 @@ superPlus 提供两条路径，按变更规模自动选择：
   (探索需求)     (设计架构)     (生成制品)           (TDD 实现)      (5D 验证)          (合并规格)      (归档收尾)
                     │               │                     │              │
                     ▼               ▼                     ▼              ▼
-               docs/designs/   docs/changes/<name>/    src/ code    docs/specs/
+          docs/changes/<topic>/  docs/changes/<name>/    src/ code    docs/specs/
                                                                           │
                                                                           ▼
                                                                    docs/changes/archive/
@@ -268,10 +268,9 @@ superPlus/
 
 ## 约定
 
-- **变更命名**：kebab-case，以动词开头（add/fix/update/remove/optimize）
-- **设计文档**：`docs/designs/YYYY-MM-DD-<topic>-design.md`
+- **设计文档**：`docs/changes/<topic>/design.md` — topic 为 kebab-case
 - **主规格**：`docs/specs/<capability>/spec.md`
-- **变更产物**：`docs/changes/<name>/{1.specs/*,2.tasks}.md`
+- **变更产物**：`docs/changes/<name>/{design.md,1.specs/*,2.tasks}.md`
 - **归档**：`docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**：始终先写失败测试，再实现，再验证
 - **所有产物必需**：每个变更必须包含 specs + tasks

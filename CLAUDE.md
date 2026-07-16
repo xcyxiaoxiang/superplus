@@ -45,7 +45,7 @@ This loads the skill discipline rules and shows all available skills. Then follo
 | Skill | Trigger | Output |
 |-------|---------|--------|
 | `exploring` | Unclear requirements, need to investigate | Exploration summary (in conversation) |
-| `designing` | Design is needed | Design doc (`docs/designs/`) |
+| `designing` | Design is needed | Design doc (`docs/changes/<topic>/design.md`) |
 | `write-plan-tasks` | Design approved | Full artifacts: specs + tasks (`docs/changes/<name>/`) |
 | `apply-change` | Tasks ready | Subagent-driven TDD implementation, tests passing |
 | `verify-change` | Implementation done | 5D verification report + issues triage (CRITICAL → `root-cause-debugging` fix loop) |
@@ -69,9 +69,8 @@ superPlus/
 ├── hooks/               # Session-start hooks
 ├── scripts/             # Helper scripts
 ├── docs/
-│   ├── changes/         # Active change directories
+│   ├── changes/         # Designs + active changes (topic/design.md + 1.specs/ + 2.tasks.md)
 │   │   └── archive/     # Archived changes
-│   ├── designs/         # Design documents
 │   └── specs/           # Main spec library
 ├── .opencode/           # OpenCode plugin config
 ├── .claude-plugin/      # Claude Code plugin manifest
@@ -84,10 +83,9 @@ superPlus/
 
 ## Conventions
 
-- **Change naming**: kebab-case, starts with verb (add/fix/update/remove/optimize)
-- **Design docs**: `docs/designs/YYYY-MM-DD-<topic>-design.md`
+- **Design docs**: `docs/changes/<topic>/design.md` — topic is kebab-case
 - **Main specs**: `docs/specs/<capability>/spec.md`
-- **Change artifacts**: `docs/changes/<name>/{1.specs/*,2.tasks}.md`
+- **Change artifacts**: `docs/changes/<name>/{design.md,1.specs/*,2.tasks}.md`
 - **Archives**: `docs/changes/archive/YYYY-MM-DD-<name>/`
 - **TDD**: Always write failing test first, then implement, then verify
 - **All artifacts required**: specs + tasks for every change

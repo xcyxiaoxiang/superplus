@@ -1,6 +1,6 @@
 ---
 name: designing
-description: "Use after exploring when you need a structured design. Can also be used directly for clear requirements. Produces a validated design doc at docs/designs/ for downstream write-plan-tasks."
+description: "Use after exploring when you need a structured design. Can also be used directly for clear requirements. Produces a validated design doc at docs/changes/<topic>/design.md for downstream write-plan-tasks."
 ---
 
 # Designing — Structure Ideas Into Actionable Plans
@@ -85,10 +85,9 @@ digraph designing {
 **SuperPlus context check (both entries):**
 
 ```
-1. Check docs/designs/     → existing designs, avoid duplication
-2. Check docs/specs/       → existing specs, align with conventions
-3. Check docs/changes/          → active changes, understand current work
-4. Check docs/changes/archive/  → historical context, learn from past decisions
+1. Check docs/changes/          → existing designs + active changes, understand current work
+2. Check docs/specs/            → existing specs, align with conventions
+3. Check docs/changes/archive/  → historical context, learn from past decisions
 ```
 
 ---
@@ -151,7 +150,7 @@ After all sections are presented and approved, confirm overall design approval. 
 
 ### Step 6: Write Design Doc
 
-Save validated design to `docs/designs/YYYY-MM-DD-<topic>-design.md`.
+Save validated design to `docs/changes/<topic>/design.md`.
 
 Use the template at `skills/designing/templates/design-document.md` as a starting point. The template defines 7 required sections (1-7) and 3 optional sections (8-10) for complex projects. Sections can be trimmed to a few sentences for simple projects, but all 7 required sections must be present.
 
@@ -186,7 +185,7 @@ Fix issues inline. No re-review needed.
 
 Ask the user to review the written design before proceeding:
 
-> "Design written to `docs/designs/YYYY-MM-DD-<topic>-design.md`. Please review it and let me know if you want any changes before we create the implementation plan."
+> "Design written to `docs/changes/<topic>/design.md`. Please review it and let me know if you want any changes before we create the implementation plan."
 
 Wait for response. If changes requested, make them and re-run self-review. Only proceed on approval.
 
@@ -230,7 +229,7 @@ Invoke the `write-plan-tasks` skill to create detailed planning artifacts.
 
 ### Design Doc → Downstream Mapping
 
-The design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md` is consumed by `write-plan-tasks`:
+The design doc at `docs/changes/<topic>/design.md` is consumed by `write-plan-tasks`:
 
 | Design Doc Section | → write-plan-tasks Output |
 |---|---|---|
@@ -242,8 +241,7 @@ The design doc at `docs/designs/YYYY-MM-DD-<topic>-design.md` is consumed by `wr
 | **Scope** | Specs → scope boundaries |
 | **Risks / Trade-offs** | `tasks.md` → **Cross-Cutting** header section |
 
-The topic in the filename determines the change name:
-`docs/designs/2026-05-20-add-dark-mode-design.md` → `docs/changes/add-dark-mode/`
+The design document directory name becomes the change name. For example, a design at `docs/changes/add-dark-mode/design.md` yields change artifacts at `docs/changes/add-dark-mode/1.specs/` and `docs/changes/add-dark-mode/2.tasks.md`.
 
 ---
 

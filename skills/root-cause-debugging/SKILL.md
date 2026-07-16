@@ -276,7 +276,7 @@ This is a lightweight gate — not a full design review, but a confirmation that
 > | # | Capture Item | When Applicable |
 > |---|-------------|----------------|
 > | 1 | **Update Specs** | Bug revealed missing requirements or edge cases → add Scenario (WHEN/THEN) to `docs/specs/<capability>/spec.md` |
-> | 2 | **Update Design Doc** | Bug revealed flawed design decisions → document correct approach and failure reason in `docs/designs/` |
+> | 2 | **Update Design Doc** | Bug revealed flawed design decisions → document correct approach and failure reason in `docs/changes/<name>/design.md` |
 > | 3 | **Update Tasks** | Bug revealed missing tasks or undocumented dependencies → add to `tasks.md` |
 > | 4 | **Debug Note** | Add inline code comment: root cause, fix applied, lesson learned |
 > | 5 | **Commit Message** | Include root cause explanation in commit message (always included regardless of other captures) |
